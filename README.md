@@ -1,5 +1,5 @@
 
-```markdown
+
 ## 🌊 Flood Guard Project Overview
 
 Bangladesh is a country highly vulnerable to floods. Every year, it faces mild to severe floods, leading to significant loss of life and financial damage. If there were a way to predict floods in advance, it would help mitigate these losses. 
@@ -53,5 +53,7 @@ Follow these steps to get started with the react-vite-ui template:
 ## 👤 Contributors
 
 - [Misbah Khan](https://github.com/MisbahKhan0009)
+- Sabbir Hossain
+- Aritra Islam Saswato
 
-```
+
