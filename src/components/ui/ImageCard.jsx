@@ -1,5 +1,7 @@
 // ImageCard.jsx
 import React from "react";
+import { Button } from "@/components/ui/button"
+
 
 const ImageCard = ({ imgUrl, title, donationLink }) => {
   return (
@@ -8,7 +10,8 @@ const ImageCard = ({ imgUrl, title, donationLink }) => {
         <img src={imgUrl} alt={title} className="w-auto mx-auto pt-4 h-48 object-fit" />
         <div className="p-6">
           <h3 className="text-lg font-semibold">{title}</h3>
-          <div className="pt-2  text-secondary">Donate now</div>
+          <Button variant="outline" className="mt-6">Donate now</Button>
+          <div className="pt-2  text-secondary"></div>
         </div>
         
       </a>
