@@ -1,27 +1,19 @@
-# React + Vite + TypeScript Template (react-vite-ui)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dan5py/react-vite-ui/blob/main/LICENSE)
+```markdown
+## 🌊 Flood Guard Project Overview
 
-A React + Vite template powered by shadcn/ui.
+Bangladesh is a country highly vulnerable to floods. Every year, it faces mild to severe floods, leading to significant loss of life and financial damage. If there were a way to predict floods in advance, it would help mitigate these losses. 
 
-## 🎉 Features
+In this project, **Flood Guard**, we aim to develop a website that can forecast floods ahead of time. The site will assist flood victims in finding safe shelters and enable rescuers to provide them with food, medical supplies, and other forms of support. It will include a navigation system, allowing both victims and rescuers to easily find the quickest route to the nearest flood shelter. 
 
-- **React** - A JavaScript library for building user interfaces.
-- **Vite** - A fast, opinionated frontend build tool.
-- **TypeScript** - A typed superset of JavaScript that compiles to plain JavaScript.
-- **Tailwind CSS** - A utility-first CSS framework.
-- **Tailwind Prettier Plugin** - A Prettier plugin for formatting Tailwind CSS classes.
-- **ESLint** - A pluggable linting utility for JavaScript and TypeScript.
-- **PostCSS** - A tool for transforming CSS with JavaScript.
-- **Autoprefixer** - A PostCSS plugin to parse CSS and add vendor prefixes.
-- **shadcn/ui** - Beautifully designed components that you can copy and paste into your apps.
+We will use location-based forecasting and strive for the highest accuracy to ensure the maximum number of lives are saved. Additionally, we will integrate a mapping system to display the status of mobile towers near the user’s location. A prediction system will also be included to help rescuers estimate the necessary amount of food and medicine.
 
 ## ⚙️ Prerequisites
 
 Make sure you have the following installed on your development machine:
 
 - Node.js (version 16 or above)
-- pnpm (package manager)
+- npm (package manager)
 
 ## 🚀 Getting Started
 
@@ -30,57 +22,36 @@ Follow these steps to get started with the react-vite-ui template:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/dan5py/react-vite-ui.git
+   git clone https://github.com/MisbahKhan0009/Flood-Guard.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd react-vite-ui
+   cd Flood-Guard
    ```
 
 3. Install the dependencies:
 
    ```bash
-   pnpm install
+   npm install
    ```
 
 4. Start the development server:
 
    ```bash
-   pnpm dev
+   npm run dev
    ```
 
 ## 📜 Available Scripts
 
-- pnpm dev - Starts the development server.
-- pnpm build - Builds the production-ready code.
-- pnpm lint - Runs ESLint to analyze and lint the code.
-- pnpm preview - Starts the Vite development server in preview mode.
+- `npm run dev` - Starts the development server.
+- `npm run build` - Builds the production-ready code.
 
-## 📂 Project Structure
 
-The project structure follows a standard React application layout:
 
-```python
-react-vite-ui/
-  ├── node_modules/      # Project dependencies
-  ├── public/            # Public assets
-  ├── src/               # Application source code
-  │   ├── components/    # React components
-  │   │   └── ui/        # shadc/ui components
-  │   ├── styles/        # CSS stylesheets
-  │   ├── lib/           # Utility functions
-  │   ├── App.tsx        # Application entry point
-  │   └── index.tsx      # Main rendering file
-  ├── .eslintrc.json     # ESLint configuration
-  ├── index.html         # HTML entry point
-  ├── postcss.config.js  # PostCSS configuration
-  ├── tailwind.config.js # Tailwind CSS configuration
-  ├── tsconfig.json      # TypeScript configuration
-  └── vite.config.ts     # Vite configuration
+## 👤 Contributors
+
+- [Misbah Khan](https://github.com/MisbahKhan0009)
+
 ```
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for details.
