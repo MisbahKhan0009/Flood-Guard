@@ -1,0 +1,16 @@
+// @ts-nocheck
+
+import { Toaster } from "sonner";
+import { router } from "./Routes/Routes";
+import { RouterProvider } from "react-router-dom";
+
+function App() {
+  return (
+    <section className="bg-secondary">
+      <RouterProvider router={router} />
+      <Toaster />
+    </section>
+  );
+}
+
+export default App;
