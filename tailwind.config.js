@@ -24,7 +24,7 @@ export default {
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#0c284d", // Updated secondary color
+          DEFAULT: "#051224", // Updated secondary color
           foreground: "hsl(var(--secondary-foreground))",
         },
       },
