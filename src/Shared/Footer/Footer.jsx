@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FooterLinks } from './FooterLinks';
+import { FooterLinks } from './footerLinks';
 
 const Footer = () => {
-  
-
   return (
     <footer className="bg-primary text-secondary py-6 mt-10">
       <div className="container mx-auto px-4 flex flex-col items-center">
