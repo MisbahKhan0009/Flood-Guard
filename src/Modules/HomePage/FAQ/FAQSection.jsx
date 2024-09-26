@@ -1,40 +1,29 @@
-// src/FAQ/FAQSection.jsx
-import React, { useState } from "react";
-import FAQData from "./FAQs";
+import React from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { faqData } from "./FAQs";
 
 const FAQSection = () => {
   return (
-    <div className="faq-section my-10">
-      <h2 className="text-3xl font-semibold text-center mb-4">
-        Frequently Asked Questions
-      </h2>
-      <div className="space-y-4">
-        {FAQData.map((faq, index) => (
-          <FAQItem key={index} question={faq.question} answer={faq.answer} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const FAQItem = ({ question, answer }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleFAQ = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <div className="faq-item border border-gray-300 rounded-md p-4">
-      <div
-        className="flex justify-between items-center cursor-pointer"
-        onClick={toggleFAQ}
-      >
-        <h3 className="text-lg font-semibold">{question}</h3>
-        <span>{isOpen ? "-" : "+"}</span>
-      </div>
-      {isOpen && <p className="mt-2 text-gray-700">{answer}</p>}
-    </div>
+    <section className="w-full bg-primary bg-opacity-15 my-16 rounded-lg">
+      <section className="w-full max-w-xl mx-auto py-12">
+        <h2 className="text-3xl font-museo text-center mb-6">
+          Frequently Asked Questions
+        </h2>
+        <Accordion type="single" collapsible>
+          {faqData.map((item, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionContent>{item.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </section>
+    </section>
   );
 };
 
