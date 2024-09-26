@@ -9,6 +9,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <WeatherProvider>
       <App />
     </WeatherProvider>
-    ,
   </React.StrictMode>
 );
