@@ -7,11 +7,11 @@ export const useWeather = () => useContext(WeatherContext);
 
 export const WeatherProvider = ({ children }) => {
   const [location, setLocation] = useState(null);
-  const [weatherData, setWeatherData] = useState(null);
+  const [currentWeatherData, setCurrentWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const WaetherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
+  const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
   const openCageApiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
 
   const getUserLocation = () => {
@@ -20,6 +20,7 @@ export const WeatherProvider = ({ children }) => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
+
             resolve({ latitude, longitude });
           },
           (error) => {
@@ -27,7 +28,10 @@ export const WeatherProvider = ({ children }) => {
           }
         );
       } else {
-        reject(new Error("Geolocation is not supported by this browser."));
+        const error = new Error(
+          "Geolocation is not supported by this browser."
+        );
+        reject(error);
       }
     });
   };
@@ -42,6 +46,7 @@ export const WeatherProvider = ({ children }) => {
       if (data.results.length > 0) {
         const city =
           data.results[0].components.city || data.results[0].components.country;
+
         return city || "Location not found";
       } else {
         throw new Error("No results found");
@@ -64,17 +69,16 @@ export const WeatherProvider = ({ children }) => {
         );
         setLocation(locationName);
 
-        // Fetch weather data
-        const response = await fetch(
-          `http://api.weatherapi.com/v1/forecast.json?key=${WaetherApiKey}&q=${locationName}&days=1`
+        const weatherResponse = await fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${locationName}&days=6&aqi=yes`
         );
-        const weatherData = await response.json();
+        const weatherData = await weatherResponse.json();
 
         if (!weatherData || weatherData.error) {
           throw new Error(weatherData.error.message);
         }
 
-        setWeatherData(weatherData);
+        setCurrentWeatherData(weatherData);
       } catch (error) {
         setError("Error fetching weather data: " + error.message);
       } finally {
@@ -83,10 +87,12 @@ export const WeatherProvider = ({ children }) => {
     };
 
     fetchWeatherData();
-  }, [WaetherApiKey, openCageApiKey]);
+  }, [weatherApiKey, openCageApiKey]);
 
   return (
-    <WeatherContext.Provider value={{ location, weatherData, loading, error }}>
+    <WeatherContext.Provider
+      value={{ location, currentWeatherData, loading, error }}
+    >
       {children}
     </WeatherContext.Provider>
   );
