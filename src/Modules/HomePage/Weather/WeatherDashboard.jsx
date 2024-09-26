@@ -18,7 +18,7 @@ const WeatherDashboard = () => {
 
   if (loading) {
     return (
-      <div className="text-center mx-auto w-full py-4">
+      <div className="flex items-center justify-center h-screen w-full py-4">
         <CirclesWithBar
           height="100"
           width="100"

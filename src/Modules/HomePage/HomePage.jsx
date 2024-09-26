@@ -4,6 +4,7 @@ import Stats from "./Stats/Stats";
 import LatestNewsSection from "./News/LatestNewsSection";
 import PrecautionSection from "./Precaution/PrecautionSection";
 import WeatherDashboard from "./Weather/WeatherDashboard";
+import FAQSection from "./FAQ/FAQSection";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <Donation />
       <LatestNewsSection />
       <PrecautionSection />
+      <FAQSection />
     </section>
   );
 };
