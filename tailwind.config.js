@@ -31,6 +31,7 @@ export default {
       fontFamily: {
         museo: ["'MuseoModerno'", "sans-serif"],
         nunito: ["'Nunito'", "sans-serif"],
+        gilda: ["'GildaDisplay'", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
