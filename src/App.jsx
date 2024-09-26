@@ -6,7 +6,7 @@ import { RouterProvider } from "react-router-dom";
 
 function App() {
   return (
-    <section className="bg-secondary">
+    <section className="bg-secondary font-nunito">
       <RouterProvider router={router} />
       <Toaster />
     </section>
