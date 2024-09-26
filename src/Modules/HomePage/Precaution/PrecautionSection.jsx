@@ -5,7 +5,7 @@ import { precautionData } from "./precautionData";
 
 const PrecautionSection = () => {
   return (
-    <section className="bg-primary bg-opacity-15 rounded-lg py-12">
+    <section className="bg-primary bg-opacity-15 rounded-lg py-12 my-12">
       <h1 className="text-4xl font-museo text-center mb-8 text-primary ">
         Precautions for Flood
       </h1>

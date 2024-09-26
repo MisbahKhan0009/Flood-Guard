@@ -2,7 +2,7 @@ import { statsData } from "./statsData";
 
 const StatsCards = () => {
   return (
-    <section className="flex flex-col justify-center items-center my-6">
+    <section className="flex flex-col justify-center items-center my-12">
       <h1 className="text-4xl font-museo text-center pt-12">Our Impact</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-10/12 mx-auto text-center py-12">
         {statsData.map((stat, index) => (
