@@ -1,4 +1,5 @@
 // src/components/PrecautionSection.jsx
+
 import React from "react";
 import { precautionData } from "./precautionData";
 
@@ -12,15 +13,15 @@ const PrecautionSection = () => {
         {precautionData.map((precaution) => (
           <div
             key={precaution.id}
-            className={`p-6 bg-gradient-to-r ${precaution.gradient} rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300`}
+            className={`p-6 bg-primary bg-opaci rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300`}
           >
-            <div className="text-5xl mb-4">{precaution.icon}</div>
+            <precaution.icon className="text-5xl mb-4 text-secondary mx-auto" />
             <p
-              className={`text-2xl font-extrabold ${precaution.color || "text-secondary"}`}
+              className={`text-2xl font-muse ${precaution.color || "text-secondary"}`}
             >
               {precaution.title}
             </p>
-            <p className="text-md text-gray-500 mt-2">
+            <p className="text-md text-secondary  mt-2">
               {precaution.description}
             </p>
           </div>
