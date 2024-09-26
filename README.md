@@ -8,6 +8,8 @@ In this project, **Flood Guard**, we aim to develop a website that can forecast 
 
 We will use location-based forecasting and strive for the highest accuracy to ensure the maximum number of lives are saved. Additionally, we will integrate a mapping system to display the status of mobile towers near the user’s location. A prediction system will also be included to help rescuers estimate the necessary amount of food and medicine.
 
+Please visit [Project Wiki](https://github.com/MisbahKhan0009/Flood-Guard/wiki) for more details.
+
 ## ⚙️ Prerequisites
 
 Make sure you have the following installed on your development machine:
