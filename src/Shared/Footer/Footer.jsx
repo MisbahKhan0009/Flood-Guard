@@ -4,8 +4,8 @@ import { FooterLinks } from './footerLinks';
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-secondary py-6 mt-10">
-      <div className="container mx-auto px-4 flex flex-col items-center">
+    <footer className="bg-primary text-secondary py-6 mt-10 pb-o mb-0">
+      <div className="container mx-auto px-3 flex flex-col items-center">
         <div className="flex flex-col md:flex-row justify-between w-full max-w-6xl">
           <div className="mb-4 md:mb-0">
             <h2 className="text-4xl font-museo">flood guard</h2>
