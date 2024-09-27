@@ -13,7 +13,7 @@ const EmergencyContactSection = () => {
         {emergencyContacts.map((contact, index) => (
           <div
             key={index}
-            className="text-secondary p-4 rounded-lg shadow-md bg-primary"
+            className="text-secondary p-4 rounded-lg shadow-md bg-primary hover:shadow-xl transform hover:scale-105 transition duration-300"
           >
             <contact.icon className="text-6xl mx-auto my-6 text-secondary" />
             <h3 className="font-thin mb-6 text-4xl">{contact.name}</h3>
