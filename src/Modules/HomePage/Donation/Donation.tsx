@@ -1,4 +1,5 @@
 // CardContainer.jsx
+// @ts-ignore
 import React from "react";
 import { DonationSites } from "./donationSites";
 import ImageCard from "../../../components/ui/ImageCard";

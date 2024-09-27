@@ -1,4 +1,5 @@
 // src/components/PrecautionSection.jsx
+// @ts-ignore
 
 import React from "react";
 import { precautionData } from "./precautionData";

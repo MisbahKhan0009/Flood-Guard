@@ -1,4 +1,5 @@
 // src/components/WeatherDashboard.jsx
+// @ts-ignore
 import React from "react";
 import {
   FaCloudRain,
@@ -57,7 +58,7 @@ const WeatherDashboard = () => {
       <h1 className="text-5xl text-primary font-museo text-center py-4">
         Weather Dashboard
       </h1>
-      <div className="relative rounded-lg mt-12 flex h-80vh overflow-hidden">
+      <div className="relative rounded-lg mt-12 flex h-[90vh] overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
           autoPlay
@@ -104,7 +105,7 @@ const WeatherDashboard = () => {
           </div>
 
           {/* Weather Forecast Section */}
-          <div className="md:col-span-2 container mx-auto py-4 px-4">
+          <div className="md:col-span-2 flex justify-center items-center container mx-auto py-4 px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {forecastday.map((day) => {
                 const date = new Date(day.date);

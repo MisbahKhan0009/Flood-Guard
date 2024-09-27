@@ -1,4 +1,5 @@
 // src/components/LatestNewsSection.jsx
+// @ts-ignore
 import React from "react";
 import { newsData } from "./newsData";
 
@@ -27,10 +28,7 @@ const LatestNewsSection = () => {
                 {news.title}
               </h2>
               <p className="text-gray-600 ">{news.description}</p>
-              <a
-                href={news.link}
-                className="text-secondary underline text-sm"
-              >
+              <a href={news.link} className="text-secondary underline text-sm">
                 Read More
               </a>
             </div>

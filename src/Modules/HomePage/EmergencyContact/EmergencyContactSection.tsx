@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from "react";
 import { emergencyContacts } from "./EmergencyInfo";
 import { Phone } from "lucide-react";

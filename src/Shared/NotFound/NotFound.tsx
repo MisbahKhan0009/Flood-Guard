@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -13,23 +14,16 @@ const NotFound = () => {
 
         {/* Right part - Description */}
         <div className="text-center md:text-left">
-          <h1 className="text-4xl font-semibold font-museo mb-2">Page Not Found</h1>
+          <h1 className="text-4xl font-semibold font-museo mb-2">
+            Page Not Found
+          </h1>
           <p className="text-lg my-4">
             The page you are looking for might have been removed, had its name
             changed, or is temporarily unavailable.
           </p>
-          <Link
-            to="/"
-            className="bg-secondary text-primary  underline"
-          >
+          <Link to="/" className="bg-secondary text-primary  underline">
             Go to Home
           </Link>
-          {/* <Link
-            to="/"
-            className="bg-secondary text-primary px-6 border-2 border-primary py-2 rounded-lg shadow-md hover:bg-opacity-80 transition"
-          >
-            Go to Home
-          </Link> */}
         </div>
       </div>
     </div>
