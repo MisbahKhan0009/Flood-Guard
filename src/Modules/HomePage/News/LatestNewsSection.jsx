@@ -5,7 +5,7 @@ import { newsData } from "./newsData";
 const LatestNewsSection = () => {
   return (
     <section className="bg-primary bg-opacity-15 py-12 my-12 rounded-lg">
-      <h1 className="text-4xl font-museo text-center mb-8 text-primary">
+      <h1 className="text-5xl font-museo text-center mb-8 text-primary">
         Latest News
       </h1>
       <div className="w-9/12 mx-auto space-y-8">

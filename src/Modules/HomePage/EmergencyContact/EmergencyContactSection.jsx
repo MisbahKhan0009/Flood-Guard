@@ -5,7 +5,7 @@ import { Phone } from "lucide-react";
 const EmergencyContactSection = () => {
   return (
     <section className="bg-primary bg-opacity-15 p-12 rounded-lg mx-auto ">
-      <h2 className="text-4xl  text-primary text-center font-museo my-6 mb-12">
+      <h2 className="text-5xl  text-primary text-center font-museo my-6 mb-12">
         Emergency Contact Information
       </h2>
       <div className="grid grid-cols-1 text-center w-11/12 mx-auto sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -53,9 +53,9 @@ const WeatherDashboard = () => {
   const currentWeatherInfo = weatherData(current);
 
   return (
-    <section className="my-6">
-      <h1 className="text-4xl text-white font-museo text-center py-4">
-        Weather Information for {currentWeatherData.location.name}
+    <section className="my-6 ">
+      <h1 className="text-5xl text-primary font-museo text-center py-4">
+        Weather Dashboard
       </h1>
       <div className="relative rounded-lg mt-12 flex h-80vh overflow-hidden">
         <video
@@ -68,25 +68,25 @@ const WeatherDashboard = () => {
           <source src="/public/BgVideo/BG-Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-60"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-75"></div>
         <div className="grid grid-cols-1 py-2  md:grid-cols-3 w-full">
           {/* Current Weather Section */}
           <div className="md:col-span-1 flex justify-center items-center">
             <div className="bg-primary bg-opacity-20 backdrop-blur-md shadow-lg rounded-lg p-6 max-w-md mx-auto">
               <div className="flex flex-col items-center">
-                <h2 className="text-2xl text-white">
+                <h2 className="text-6xl font-thin text-primary">
                   {currentWeatherData.location.name}
                 </h2>
-                <h2 className="text-xl font-light text-white">Today</h2>
+                <h2 className="text-xl font-light text-primary">Today</h2>
                 <img
                   src={`https:${current.condition.icon}`}
                   alt={current.condition.text}
-                  className="my-2 w-16 h-16"
+                  className="mt-2 w-16 h-16"
                 />
-                <p className="text-lg text-white mb-4">
+                <p className="text-lg text-primary mb-4">
                   {current.condition.text}
                 </p>
-                <div className="grid grid-cols-1 gap-2 mt-4 w-full">
+                <div className="grid grid-cols-1 gap-2  w-full">
                   {currentWeatherInfo.map((info) => (
                     <div
                       key={info.id}
@@ -107,17 +107,16 @@ const WeatherDashboard = () => {
           <div className="md:col-span-2 container mx-auto py-4 px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {forecastday.map((day) => {
-                // Convert the date to the day of the week
                 const date = new Date(day.date);
-                const options = { weekday: "long" }; // full day name like 'Sunday'
+                const options = { weekday: "long" };
                 const dayName = date.toLocaleDateString("en-US", options);
 
                 return (
                   <div
                     key={day.date_epoch}
-                    className="bg-white bg-opacity-10 backdrop-blur-lg p-6 rounded-lg shadow-md flex flex-col items-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-opacity-20"
+                    className="bg-primary bg-opacity-10 backdrop-blur-lg p-6 rounded-lg shadow-md flex flex-col items-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-opacity-20"
                   >
-                    <h3 className="text-2xl text-white font-thin mb-2">
+                    <h3 className="text-2xl text-primary font-thin mb-2">
                       {dayName}
                     </h3>
                     <img
@@ -125,10 +124,10 @@ const WeatherDashboard = () => {
                       alt={day.day.condition.text}
                       className="w-16 h-16"
                     />
-                    <p className="text-lg text-white font-light mb-2">
+                    <p className="text-lg text-primary font-light mb-2">
                       {day.day.condition.text}
                     </p>
-                    <div className="text-white">
+                    <div className="text-primary">
                       <p className="flex justify-center font-thin items-center">
                         <FaThermometerHalf className="text-primary  me-2" /> Max
                         Temp: {day.day.maxtemp_c}°C
