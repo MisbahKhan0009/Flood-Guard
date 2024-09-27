@@ -14,8 +14,9 @@ export const precautionData = [
     title: "Move to Higher ground",
     description:
       "Immediately move to higher ground or stay on high ground during a flood.",
-    icon: FiArrowUpCircle, // You can replace this with an icon if needed.
-    gradient: "from-red-50 to-red-100",
+    icon: FiArrowUpCircle,
+    gradient: "from-red-50 to-red-50",
+    text: "text-red-700",
   },
   {
     id: 2,
@@ -23,23 +24,26 @@ export const precautionData = [
     description:
       "Do not walk or drive through floodwaters to avoid being swept away.",
     icon: FiAlertTriangle,
-    gradient: "from-yellow-50 to-yellow-100",
+    gradient: "from-teal-50 to-teal-50",
+    text: "text-teal-700",
   },
   {
     id: 3,
-    title: "Monitor Weather Updates",
+    title: "Get Weather Updates",
     description:
       "Stay updated on weather forecasts and flood warnings via radio or apps.",
     icon: FiRadio,
-    gradient: "from-blue-50 to-blue-100",
+    gradient: "from-blue-50 to-blue-50",
+    text: "text-blue-700",
   },
   {
     id: 4,
-    title: "Prepare an Emergency Kit",
+    title: "Prepare Emergency Kit",
     description:
       "Ensure you have an emergency kit with essential supplies like food and water.",
     icon: FiBox,
-    gradient: "from-green-50 to-green-100",
+    gradient: "from-green-50 to-green-50",
+    text: "text-green-700",
   },
   {
     id: 5,
@@ -47,7 +51,8 @@ export const precautionData = [
     description:
       "Turn off utilities such as electricity and gas to prevent electrical hazards.",
     icon: FiPower,
-    gradient: "from-purple-50 to-purple-100",
+    gradient: "from-purple-50 to-purple-50",
+    text: "text-purple-700",
   },
   {
     id: 6,
@@ -55,6 +60,7 @@ export const precautionData = [
     description:
       "Check on neighbors, especially the elderly or disabled, during a flood.",
     icon: FiUsers,
-    gradient: "from-pink-50 to-pink-100",
+    gradient: "from-pink-50 to-pink-50",
+    text: "text-pink-700",
   },
 ];
