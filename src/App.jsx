@@ -7,12 +7,12 @@ import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-w
 
 function App() {
   return (
-    <BackgroundBeamsWithCollision className="-z-50">
+    // <BackgroundBeamsWithCollision className="-z-50">
       <section className="bg-secondary font-nunito ">
         <RouterProvider router={router} />
         <Toaster />
       </section>
-    </BackgroundBeamsWithCollision>
+    // </BackgroundBeamsWithCollision>
   );
 }
 
