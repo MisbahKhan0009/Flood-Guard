@@ -69,11 +69,11 @@ const WeatherDashboard = () => {
           <source src="/public/BgVideo/BG-Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-75"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-60"></div>
         <div className="grid grid-cols-1 py-2  md:grid-cols-3 w-full">
           {/* Current Weather Section */}
           <div className="md:col-span-1 flex justify-center items-center">
-            <div className="bg-primary bg-opacity-20 backdrop-blur-md shadow-lg rounded-lg p-6 max-w-md mx-auto">
+            <div className="bg-secondary bg-opacity-30 backdrop-blur-md shadow-lg rounded-lg p-6 max-w-md mx-auto">
               <div className="flex flex-col items-center">
                 <h2 className="text-6xl font-thin text-primary">
                   {currentWeatherData.location.name}
@@ -115,7 +115,7 @@ const WeatherDashboard = () => {
                 return (
                   <div
                     key={day.date_epoch}
-                    className="bg-primary bg-opacity-10 backdrop-blur-lg p-6 rounded-lg shadow-md flex flex-col items-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-opacity-20"
+                    className="bg-secondary bg-opacity-30 backdrop-blur-md p-6 rounded-lg shadow-md flex flex-col items-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-opacity-20"
                   >
                     <h3 className="text-2xl text-primary font-thin mb-2">
                       {dayName}

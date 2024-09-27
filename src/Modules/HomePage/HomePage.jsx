@@ -9,14 +9,14 @@ import EmergencyContactSection from "./EmergencyContact/EmergencyContactSection"
 
 const HomePage = () => {
   return (
-    <section className="w-10/12 mx-auto ">
-      <WeatherDashboard />
-      <Stats />
-      <LatestNewsSection />
-      <PrecautionSection />
-      <Donation />
-      <EmergencyContactSection />
-      <FAQSection />
+    <section className="w-10/12 mx-auto  ">
+      <WeatherDashboard className="backdrop-blur-md" />
+      <Stats className="backdrop-blur-md" />
+      <LatestNewsSection className="backdrop-blur-md" />
+      <PrecautionSection className="backdrop-blur-md" />
+      <Donation className="backdrop-blur-md" />
+      <EmergencyContactSection className="backdrop-blur-md" />
+      <FAQSection className="backdrop-blur-md" />
     </section>
   );
 };
