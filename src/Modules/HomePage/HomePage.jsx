@@ -12,9 +12,9 @@ const HomePage = () => {
     <section className="w-10/12 mx-auto ">
       <WeatherDashboard />
       <Stats />
-      <Donation />
       <LatestNewsSection />
       <PrecautionSection />
+      <Donation />
       <EmergencyContactSection />
       <FAQSection />
     </section>
