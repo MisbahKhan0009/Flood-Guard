@@ -1,6 +1,6 @@
 // CardContainer.jsx
 import React from "react";
-import { DonationSites } from "./donationSites";
+import { DonationSites } from "./DonationSites";
 import ImageCard from "../../../components/ui/ImageCard";
 
 const Donation = () => {
