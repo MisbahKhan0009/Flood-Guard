@@ -57,7 +57,7 @@ Follow these steps to get started with the react-vite-ui template:
 Team **Machine Minds**
 
 - [Misbah Khan](https://github.com/MisbahKhan0009)
-- Sabbir Hossain
+- [Sabbir Hossain](https://github.com/Sabbir-Hossain22)
 - Aritra Islam Saswato
 
 

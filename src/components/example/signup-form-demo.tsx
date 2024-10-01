@@ -1,15 +1,16 @@
 "use client";
 import React from "react";
-import { Label } from "@/components/Label";
-import { Input } from "@/components/Input";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import {
   IconBrandGithub,
   IconBrandGoogle,
+  IconBrandOnlyfans,
 } from "@tabler/icons-react";
 
-export function SignupFormDemo() {
-  const handleSubmit = (e) => {
+export default function SignupFormDemo() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
   };
@@ -22,6 +23,7 @@ export function SignupFormDemo() {
         Login to aceternity if you can because we don&apos;t have a login flow
         yet
       </p>
+
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
@@ -81,6 +83,16 @@ export function SignupFormDemo() {
             </span>
             <BottomGradient />
           </button>
+          <button
+            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            type="submit"
+          >
+            <IconBrandOnlyfans className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
+            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
+              OnlyFans
+            </span>
+            <BottomGradient />
+          </button>
         </div>
       </form>
     </div>
@@ -96,7 +108,13 @@ const BottomGradient = () => {
   );
 };
 
-const LabelInputContainer = ({ children, className }) => {
+const LabelInputContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
     <div className={cn("flex flex-col space-y-2 w-full", className)}>
       {children}

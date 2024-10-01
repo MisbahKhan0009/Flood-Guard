@@ -1,6 +1,9 @@
 export const FooterLinks = [
-  { name: "About Us", path: "/about" },
+  {
+    name: "About",
+    path: "https://github.com/MisbahKhan0009/Flood-Guard/wiki",
+  },
+  { name: "Github", path: "https://github.com/MisbahKhan0009/Flood-Guard" },
   { name: "Developers", path: "/developers" },
-  { name: "Github", path: "/github" },
   { name: "News", path: "/news" },
 ];
