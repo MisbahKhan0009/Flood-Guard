@@ -1,13 +1,6 @@
-<<<<<<< HEAD:src/Shared/Footer/Footer.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FooterLinks } from './FooterLinks';
-=======
 // @ts-ignore
 import React from "react";
-import { Link } from "react-router-dom";
 import { FooterLinks } from "./FooterLinks";
->>>>>>> origin/main:src/Shared/Footer/Footer.tsx
 
 const Footer = () => {
   return (
