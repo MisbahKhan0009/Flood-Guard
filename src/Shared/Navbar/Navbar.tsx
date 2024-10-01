@@ -1,7 +1,7 @@
 // @ts-ignore
 import React from "react";
 import { Link } from "react-router-dom";
-import { NavLinks } from "./navLinks";
+import { NavLinks } from "./NavLinks";
 
 
 const Navbar = () => {

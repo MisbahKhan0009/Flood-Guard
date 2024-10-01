@@ -1,7 +1,7 @@
 // @ts-ignore
 import React from "react";
 import { Link } from "react-router-dom";
-import { FooterLinks } from "./footerLinks";
+import { FooterLinks } from "./FooterLinks";
 
 const Footer = () => {
   return (
