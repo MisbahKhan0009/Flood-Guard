@@ -1,15 +1,7 @@
 // src/components/WeatherDashboard.jsx
 // @ts-ignore
 import React from "react";
-import {
-  FaCloudRain,
-  FaWind,
-  FaThermometerHalf,
-  FaCity,
-  FaCloudSunRain,
-} from "react-icons/fa";
-import { FaMaskVentilator } from "react-icons/fa6";
-import { GiRaining } from "react-icons/gi";
+import { FaThermometerHalf, FaCloudSunRain } from "react-icons/fa";
 import { CirclesWithBar } from "react-loader-spinner";
 import { useWeather } from "../../../context/WeatherContext";
 import { weatherData } from "./weatherData";
