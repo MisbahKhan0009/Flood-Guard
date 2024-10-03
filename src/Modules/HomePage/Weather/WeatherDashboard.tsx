@@ -1,15 +1,7 @@
 // src/components/WeatherDashboard.jsx
 // @ts-ignore
 import React from "react";
-import {
-  FaCloudRain,
-  FaWind,
-  FaThermometerHalf,
-  FaCity,
-  FaCloudSunRain,
-} from "react-icons/fa";
-import { FaMaskVentilator } from "react-icons/fa6";
-import { GiRaining } from "react-icons/gi";
+import { FaThermometerHalf, FaCloudSunRain } from "react-icons/fa";
 import { CirclesWithBar } from "react-loader-spinner";
 import { useWeather } from "../../../context/WeatherContext";
 import { weatherData } from "./weatherData";
@@ -66,10 +58,10 @@ const WeatherDashboard = () => {
           muted
           playsInline
         >
-          <source src="/public/BgVideo/BG-Video.mp4" type="video/mp4" />
+          <source src="/BgVideo/BG-Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-60"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-20"></div>
         <div className="grid grid-cols-1 py-2  md:grid-cols-3 w-full">
           {/* Current Weather Section */}
           <div className="md:col-span-1 flex justify-center items-center">
