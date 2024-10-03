@@ -58,10 +58,10 @@ const WeatherDashboard = () => {
           muted
           playsInline
         >
-          <source src="/public/BgVideo/BG-Video.mp4" type="video/mp4" />
+          <source src="/BgVideo/BG-Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-60"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-secondary bg-opacity-20"></div>
         <div className="grid grid-cols-1 py-2  md:grid-cols-3 w-full">
           {/* Current Weather Section */}
           <div className="md:col-span-1 flex justify-center items-center">
