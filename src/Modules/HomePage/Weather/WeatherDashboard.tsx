@@ -3,7 +3,7 @@
 import React from "react";
 import { FaThermometerHalf, FaCloudSunRain } from "react-icons/fa";
 import { CirclesWithBar } from "react-loader-spinner";
-import { useWeather } from "../../../context/WeatherContext";
+import { useWeather } from "../../../context/WeatherProvider";
 import { weatherData } from "./weatherData";
 
 const WeatherDashboard = () => {

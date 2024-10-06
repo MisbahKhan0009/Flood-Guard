@@ -20,7 +20,6 @@ export const WeatherProvider = ({ children }) => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-
             resolve({ latitude, longitude });
           },
           (error) => {
@@ -28,10 +27,7 @@ export const WeatherProvider = ({ children }) => {
           }
         );
       } else {
-        const error = new Error(
-          "Geolocation is not supported by this browser."
-        );
-        reject(error);
+        reject(new Error("Geolocation is not supported by this browser."));
       }
     });
   };
@@ -42,11 +38,9 @@ export const WeatherProvider = ({ children }) => {
         `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${openCageApiKey}`
       );
       const data = await response.json();
-
       if (data.results.length > 0) {
         const city =
           data.results[0].components.city || data.results[0].components.country;
-
         return city || "Location not found";
       } else {
         throw new Error("No results found");
@@ -57,10 +51,9 @@ export const WeatherProvider = ({ children }) => {
     }
   };
 
+  // First useEffect to get user location
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      setLoading(true);
-      setError("");
+    const fetchLocation = async () => {
       try {
         const { latitude, longitude } = await getUserLocation();
         const locationName = await getLocationFromCoordinates(
@@ -68,9 +61,23 @@ export const WeatherProvider = ({ children }) => {
           longitude
         );
         setLocation(locationName);
+      } catch (error) {
+        setError("Error fetching location: " + error.message);
+      }
+    };
+    fetchLocation();
+  }, [openCageApiKey]);
 
+  // Second useEffect to fetch weather data after location is set
+  useEffect(() => {
+    if (!location) return; // Prevent fetching weather data without a location
+
+    const fetchWeatherData = async () => {
+      setLoading(true);
+      setError("");
+      try {
         const weatherResponse = await fetch(
-          `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${locationName}&days=6&aqi=yes`
+          `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${location}&days=6&aqi=yes`
         );
         const weatherData = await weatherResponse.json();
 
@@ -87,12 +94,12 @@ export const WeatherProvider = ({ children }) => {
     };
 
     fetchWeatherData();
-  }, [weatherApiKey, openCageApiKey]);
+  }, [location, weatherApiKey]);
+
+  const weatherData = { location, currentWeatherData, loading, error };
 
   return (
-    <WeatherContext.Provider
-      value={{ location, currentWeatherData, loading, error }}
-    >
+    <WeatherContext.Provider value={weatherData}>
       {children}
     </WeatherContext.Provider>
   );
