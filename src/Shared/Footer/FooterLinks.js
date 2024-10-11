@@ -1,3 +1,5 @@
+//FooterLinks.js
+
 export const FooterLinks = [
   {
     name: "About",
@@ -7,3 +9,4 @@ export const FooterLinks = [
   { name: "Developers", path: "/developers" },
   { name: "News", path: "/news" },
 ];
+

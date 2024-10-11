@@ -1,3 +1,5 @@
+//donationSites.js is a file that contains the data of the donation sites that are shown in the donation section of the homepage.
+
 export const DonationSites = [
   {
     title: "Chief Advisor's Relief and Welfare Fund",
