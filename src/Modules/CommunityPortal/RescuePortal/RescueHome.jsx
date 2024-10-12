@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Victims from "./Victims";
+import Victims from "./VictimList/Victims";
 import VictimList from "./VictimList";
 
 const RescueHome = () => {

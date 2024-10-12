@@ -96,7 +96,13 @@ export const WeatherProvider = ({ children }) => {
     fetchWeatherData();
   }, [location, weatherApiKey]);
 
-  const weatherData = { location, currentWeatherData, loading, error };
+  const weatherData = {
+    location,
+    currentWeatherData,
+
+    loading,
+    error,
+  };
 
   return (
     <WeatherContext.Provider value={weatherData}>
