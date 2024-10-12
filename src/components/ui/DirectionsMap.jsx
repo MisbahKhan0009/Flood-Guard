@@ -32,6 +32,7 @@ const DirectionsMap = ({ destination }) => {
       console.error(error);
     });
   }, []);
+  console.log(currentLocation);
 
   useEffect(() => {
     if (!currentLocation) return; // Don't initialize map if location is not set
@@ -50,7 +51,6 @@ const DirectionsMap = ({ destination }) => {
       waypoints: [
         L.latLng(currentLocation[0], currentLocation[1]),
         L.latLng(destination[0], destination[1]),
-        
       ],
       routeWhileDragging: true,
     }).addTo(map);
@@ -69,7 +69,7 @@ const DirectionsMap = ({ destination }) => {
         color="#4fa94d"
         ariaLabel="three-circles-loading"
         wrapperStyle={{}}
-        wrapperClass=""
+        className="mx-auto w-full"
       />
     );
   }
@@ -78,9 +78,9 @@ const DirectionsMap = ({ destination }) => {
     <div
       id="map"
       style={{
-        height: "500px",
+        height: "80vh",
         width: "100%",
-        color: "transparent",
+        color: "red",
         border: 0,
       }}
     ></div>

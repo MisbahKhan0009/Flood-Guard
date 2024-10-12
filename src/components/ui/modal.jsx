@@ -6,7 +6,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25 backdrop-blur">
-      <div className="bg-white text-black text-2xl p-6 rounded-lg shadow-lg w-3/4 lg:w-1/2 relative">
+      <div className="bg-white text-black text-2xl p-6 rounded-lg shadow-lg w-3/4  relative">
         {/* Close button positioned absolutely to the top right */}
         <button
           onClick={onClose}
