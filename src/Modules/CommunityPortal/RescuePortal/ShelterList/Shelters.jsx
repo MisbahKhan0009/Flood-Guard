@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import Badge from "../../../../components/ui/badge";
+import {
+  IoIosArrowBack,
+  IoIosArrowDown,
+  IoIosArrowForward,
+  IoIosArrowUp,
+} from "react-icons/io";
 import { debounce } from "lodash";
-
+import MapComponent from "../../../../components/ui/MapComponent";
+import DirectionsMap from "../../../../components/ui/DirectionsMap";
+import Modal from "../../../../components/ui/modal";
 import AdditionalInfoTable from "../../../../components/ui/AdditionalInfoTable";
 import Pagination from "../../../../components/ui/Pagination";
 import Table from "../../../../components/ui/table";
@@ -14,34 +20,22 @@ const Row = ({ row }) => {
   const [isMapOpen, setIsMapOpen] = useState(false); // For View Location
   const [isDirectionOpen, setIsDirectionOpen] = useState(false); // For Get Directions
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return date.toLocaleDateString("en-GB", options);
-  };
-
   const additionalInfo = [
-    { label: "NID", value: row.NID },
     { label: "Address Upazila", value: row.address_upazila },
     { label: "Address District", value: row.address_district },
     {
       label: "Exact Location",
       value: ["View Location", "Get Directions"], // For handling the map actions
     },
-    { label: "Mobile", value: row.mobile },
-    { label: "Email", value: row.email },
-    { label: "Gender", value: row.gender },
-    { label: "Age", value: row.age },
-    { label: "Number of Family Members", value: row.number_of_family_members },
-    { label: "Health Status", value: row.health_status },
-    { label: "Rescue Time", value: formatDate(row.rescue_time) || "N/A" },
-    { label: "Resources Needed", value: row.resources_needed || "N/A" },
+
+    { label: "Required Food", value: row.required_food },
+    { label: "Required Medicine", value: row.required_medicine },
+    { label: "Medical Support", value: row.medical_support },
   ];
 
   return (
     <>
-      <tr className="border-b  border-opacity-25 border-primary">
+      <tr className="border-b border-opacity-25 border-primary">
         <td className="pb-1">
           <button
             onClick={() => setOpen(!open)}
@@ -52,45 +46,9 @@ const Row = ({ row }) => {
         </td>
         <td className="pb-1">{row.name}</td>
         <td className="pb-1">{row.address_area}</td>
-        <td className="text-center">
-          <Badge
-            variant={
-              row.danger_level === "High"
-                ? "destructive"
-                : row.danger_level === "Medium"
-                  ? "warning"
-                  : "success"
-            }
-          >
-            {row.danger_level}
-          </Badge>
-        </td>
-        <td className="text-center">
-          <Badge
-            variant={
-              row.rescue_status === "Pending"
-                ? "destructive"
-                : row.rescue_status === "In Progress"
-                  ? "warning"
-                  : "success"
-            }
-          >
-            {row.rescue_status}
-          </Badge>
-        </td>
-        <td className="text-center">
-          <Badge
-            variant={
-              row.health_status === "Critical"
-                ? "destructive"
-                : row.health_status === "Injured"
-                  ? "warning"
-                  : "success"
-            }
-          >
-            {row.health_status}
-          </Badge>
-        </td>
+        <td className="text-center">{row.number_of_children}</td>
+        <td className="text-center">{row.number_of_women}</td>
+        <td className="text-center">{row.number_of_mothers}</td>
       </tr>
 
       {open && (
@@ -103,32 +61,46 @@ const Row = ({ row }) => {
   );
 };
 
-// Victims component to display table with search, sorting, and pagination
-const Victims = ({ apiUrl }) => {
-  const [victims, setVictims] = useState([]);
-  const [totalVictims, setTotalVictims] = useState(0);
+// Shelters component to display table with search, sorting, and pagination
+const Shelters = ({ apiUrl }) => {
+  const [shelters, setShelters] = useState([]);
+  const [totalShelters, setTotalShelters] = useState(0);
   const [pageNumber, setPageNumber] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchField, setSearchField] = useState("name"); // New state for search field
+  const [searchField, setSearchField] = useState("name");
   const [sortField, setSortField] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
 
   const headers = [
-    { label: "Name", field: "name" },
-    { label: "Area", field: "address_area" },
-    { label: "Danger Level", field: "danger_level" },
-    { label: "Rescue Status", field: "rescue_status" },
-    { label: "Health Status", field: "health_status" },
+    // { label: " ", field: " ", sortable: false },
+    { label: "Name", field: "name", sortable: true },
+    { label: "Area", field: "address_area", sortable: true },
+    {
+      label: "Number of Children",
+      field: "number_of_children",
+      sortable: true,
+    },
+    { label: "Number of Women", field: "number_of_women", sortable: true },
+    { label: "Number of Mothers", field: "number_of_mothers", sortable: true },
   ];
 
-  // Fetch victims from the API
+  const handleChangePage = (newPage) => {
+    setPageNumber(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPageNumber(0); // Reset page number when changing rows per page
+  };
+
+  // Fetch Shelters from the API
   useEffect(() => {
-    const fetchVictims = async () => {
+    const fetchShelters = async () => {
       try {
         const offset = pageNumber * rowsPerPage;
 
-        const response = await axios.get("http://localhost:3000/api/victims", {
+        const response = await axios.get("http://localhost:3000/api/shelters", {
           params: {
             search: searchTerm || "", // Ensure search term is included
             searchField, // Include selected search field
@@ -138,15 +110,23 @@ const Victims = ({ apiUrl }) => {
             offset,
           },
         });
-        setVictims(response.data.victims);
-        setTotalVictims(response.data.totalCount);
+        setShelters(response.data.shelters);
+        setTotalShelters(response.data.totalCount);
       } catch (error) {
-        console.error("Error fetching victims:", error);
+        console.error("Error fetching shelters:", error);
       }
     };
 
-    fetchVictims();
-  }, [searchTerm, searchField, sortField, sortOrder, pageNumber, rowsPerPage]);
+    fetchShelters();
+  }, [
+    apiUrl,
+    searchTerm,
+    searchField,
+    sortField,
+    sortOrder,
+    pageNumber,
+    rowsPerPage,
+  ]);
 
   // Handle search input (debounced for better performance)
   const handleSearchInput = debounce((event) => {
@@ -161,23 +141,12 @@ const Victims = ({ apiUrl }) => {
     setSortField(field);
     setSortOrder(newSortOrder);
   };
-
-  const handleChangePage = (newPage) => {
-    setPageNumber(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPageNumber(0);
-  };
   const renderVictimRow = (victim) => <Row key={victim.id} row={victim} />;
 
   return (
     <div className="w-full p-4">
       <div className="flex flex-col justify-between mb-4">
-        <p className="text-center my-4 text-lg">
-          Search by Name, Danger Level, Rescue Status or Health Status
-        </p>
+        <p className="text-center my-4 text-lg">Search by Name and Area</p>
         <input
           type="text"
           onChange={handleSearchInput}
@@ -189,23 +158,21 @@ const Victims = ({ apiUrl }) => {
       {/* Table */}
       <Table
         headers={headers}
-        data={victims}
+        data={shelters}
         sortField={sortField}
         sortOrder={sortOrder}
         handleSort={handleSort}
         renderRow={renderVictimRow}
       />
-
       <Pagination
         pageNumber={pageNumber}
         rowsPerPage={rowsPerPage}
-        totalItems={totalVictims}
+        totalItems={totalShelters}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        // className="table-auto"
       />
     </div>
   );
 };
 
-export default Victims;
+export default Shelters;

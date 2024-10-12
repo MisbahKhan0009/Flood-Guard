@@ -1,52 +1,46 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Victims from "./VictimList/Victims";
-import VictimList from "./VictimList";
+import Shelters from "./ShelterList/Shelters";
+
+const tabsData = [
+  {
+    label: "Victims",
+    value: "victimList",
+    title: "List of Victims",
+    content: <Victims />,
+  },
+  {
+    label: "Shelter List",
+    value: "shelterList",
+    title: "List of Shelter",
+    content: <Shelters />,
+  },
+];
 
 const RescueHome = () => {
   return (
     <Tabs defaultValue="victimList" className="container my-10">
       <TabsList className="grid w-full mx-auto my-4 grid-cols-2">
-        <TabsTrigger className="text-lg" value="victimList">
-          Victims
-        </TabsTrigger>
-        <TabsTrigger className="text-lg" value="victims2">
-          Victim List
-        </TabsTrigger>
+        {tabsData.map((tab) => (
+          <TabsTrigger key={tab.value} className="text-lg" value={tab.value}>
+            {tab.label}
+          </TabsTrigger>
+        ))}
       </TabsList>
-      <TabsContent value="victimList">
-        <Card>
-          <CardHeader className="mx-auto w-full">
-            <CardTitle>List of Victims</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Victims />
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="victims2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Victim List</CardTitle>
-            <CardDescription>
-              Change your victims2 here. After saving, you'll be logged out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <VictimList />
-          </CardContent>
-        </Card>
-      </TabsContent>
+      {tabsData.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value}>
+          <Card>
+            <CardHeader className="mx-auto w-full">
+              <CardTitle className="font-museo font-light text-3xl">
+                {tab.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>{tab.content}</CardContent>
+          </Card>
+        </TabsContent>
+      ))}
     </Tabs>
   );
 };
