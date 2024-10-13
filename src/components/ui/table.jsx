@@ -12,7 +12,7 @@ const Table = ({
     <table className="min-w-full text-primary table-auto border-collapse text-left">
       <thead>
         <tr>
-          <th className="p-2"></th> {/* Blank column */}
+          <th className="p-2 w-4"></th>
           {headers.map((header) => (
             <th
               key={header.field}
@@ -20,7 +20,7 @@ const Table = ({
                 header.label === "Name" || header.label === "Area"
                   ? "text-left"
                   : "text-center"
-              }`}
+              } w-[150px]`}
               onClick={() => handleSort(header.field)}
             >
               {header.label}{" "}
