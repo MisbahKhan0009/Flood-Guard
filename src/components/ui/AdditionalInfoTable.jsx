@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./modal";
-import MapComponent from "./MapComponent"; // Assuming you're using this component for rendering maps
-import DirectionsMap from "./DirectionsMap"; // Assuming you're using this for directions
+import MapComponent from "./MapComponent";
+import DirectionsMap from "./DirectionsMap";
 
 const AdditionalInfoTable = ({
   additionalInfo,
@@ -18,7 +18,7 @@ const AdditionalInfoTable = ({
     <tr>
       <td colSpan={6}>
         <div className="p-2 m-2 pb-6 w-3/4 mx-auto rounded-xl bg-secondary">
-          <h4 className="font-thin text-center text-2xl my-6">{tableTitle}</h4>
+          <h4 className="text-center font-museo text-3xl my-6">{tableTitle}</h4>
           <table className="w-11/12 mx-auto table-auto border-collapse">
             <tbody>
               {additionalInfo.map((info) => (
@@ -31,13 +31,13 @@ const AdditionalInfoTable = ({
                           className="text-blue-500 mr-4"
                           onClick={() => setIsMapOpen(true)}
                         >
-                          {info.value[0]} {/* View Location */}
+                          {info.value[0]}
                         </button>
                         <button
                           className="text-blue-500"
                           onClick={() => setIsDirectionOpen(true)}
                         >
-                          {info.value[1]} {/* Get Directions */}
+                          {info.value[1]}
                         </button>
                       </>
                     ) : (
@@ -49,10 +49,8 @@ const AdditionalInfoTable = ({
             </tbody>
           </table>
 
-          {/* Render additional children if needed */}
           {children}
 
-          {/* Modal for View Location */}
           <Modal isOpen={isMapOpen} onClose={() => setIsMapOpen(false)}>
             <h3 className="text-center mb-4">View Location</h3>
             {MapComponentProp ? (
@@ -65,7 +63,6 @@ const AdditionalInfoTable = ({
             )}
           </Modal>
 
-          {/* Modal for Get Directions */}
           <Modal
             isOpen={isDirectionOpen}
             onClose={() => setIsDirectionOpen(false)}

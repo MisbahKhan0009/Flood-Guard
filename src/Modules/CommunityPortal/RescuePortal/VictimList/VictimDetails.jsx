@@ -2,16 +2,10 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import AdditionalInfoTable from "../../../../components/ui/AdditionalInfoTable";
 import Badge from "../../../../components/ui/badge";
 import { useState } from "react";
+import { formatDate } from "../../../../utils/dateFormatter";
 
 const VictimDetails = ({ row }) => {
   const [open, setOpen] = useState(false);
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return date.toLocaleDateString("en-GB", options);
-  };
 
   const additionalInfo = [
     { label: "NID", value: row.NID },

@@ -3,11 +3,11 @@ import axios from "axios";
 import { debounce } from "lodash";
 import Pagination from "../../../../components/ui/Pagination";
 import Table from "../../../../components/ui/table";
-import ShelterDetails from "./ShelterDetails";
+import DonationDetails from "./DonationDetails";
 
-const Shelters = () => {
-  const [shelters, setShelters] = useState([]);
-  const [totalShelters, setTotalShelters] = useState(0);
+const Donations = () => {
+  const [donations, setDonations] = useState([]);
+  const [totalDonations, setTotalDonations] = useState(0);
   const [pageNumber, setPageNumber] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,15 +16,11 @@ const Shelters = () => {
   const [sortOrder, setSortOrder] = useState("asc");
 
   const headers = [
-    { label: "Name", field: "name", sortable: true },
-    { label: "Area", field: "address_area", sortable: true },
-    {
-      label: "Number of Children",
-      field: "number_of_children",
-      sortable: true,
-    },
-    { label: "Number of Women", field: "number_of_women", sortable: true },
-    { label: "Number of Mothers", field: "number_of_mothers", sortable: true },
+    { label: "Donor Name", field: "donor_name", sortable: true },
+    { label: "Donation Type", field: "donation_type", sortable: true },
+    { label: "Quantity", field: "quantity", sortable: true },
+    { label: "Date Received", field: "date_received", sortable: true },
+    
   ];
 
   const handleChangePage = (newPage) => {
@@ -37,28 +33,31 @@ const Shelters = () => {
   };
 
   useEffect(() => {
-    const fetchShelters = async () => {
+    const fetchDonations = async () => {
       try {
         const offset = pageNumber * rowsPerPage;
 
-        const response = await axios.get("http://localhost:3000/api/shelters", {
-          params: {
-            search: searchTerm || "",
-            searchField,
-            sortField,
-            sortOrder,
-            limit: rowsPerPage,
-            offset,
-          },
-        });
-        setShelters(response.data.shelters);
-        setTotalShelters(response.data.totalCount);
+        const response = await axios.get(
+          "http://localhost:3000/api/donations",
+          {
+            params: {
+              search: searchTerm || "",
+              searchField,
+              sortField,
+              sortOrder,
+              limit: rowsPerPage,
+              offset,
+            },
+          }
+        );
+        setDonations(response.data.donations);
+        setTotalDonations(response.data.totalCount);
       } catch (error) {
-        console.error("Error fetching shelters:", error);
+        console.error("Error fetching donations:", error);
       }
     };
 
-    fetchShelters();
+    fetchDonations();
   }, [searchTerm, searchField, sortField, sortOrder, pageNumber, rowsPerPage]);
 
   const handleSearchInput = debounce((event) => {
@@ -73,13 +72,13 @@ const Shelters = () => {
     setSortOrder(newSortOrder);
   };
   const renderVictimRow = (victim) => (
-    <ShelterDetails key={victim.id} row={victim} />
+    <DonationDetails key={victim.id} row={victim} />
   );
 
   return (
     <div className="w-full p-4">
       <div className="flex flex-col justify-between mb-4">
-        <p className="text-center my-4 text-lg">Search by Name and Area</p>
+        <p className="text-center my-4 text-lg">Search by Name and Item</p>
         <input
           type="text"
           onChange={handleSearchInput}
@@ -90,7 +89,7 @@ const Shelters = () => {
 
       <Table
         headers={headers}
-        data={shelters}
+        data={donations}
         sortField={sortField}
         sortOrder={sortOrder}
         handleSort={handleSort}
@@ -99,7 +98,7 @@ const Shelters = () => {
       <Pagination
         pageNumber={pageNumber}
         rowsPerPage={rowsPerPage}
-        totalItems={totalShelters}
+        totalItems={totalDonations}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
@@ -107,4 +106,4 @@ const Shelters = () => {
   );
 };
 
-export default Shelters;
+export default Donations;

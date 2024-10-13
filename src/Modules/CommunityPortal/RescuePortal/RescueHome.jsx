@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Victims from "./VictimList/Victims";
 import Shelters from "./ShelterList/Shelters";
+import Donations from "./DonorList/Donors";
+import { getGridColsClass } from "../../../utils/gridColsCalculator";
 
 const tabsData = [
   {
@@ -17,12 +18,19 @@ const tabsData = [
     title: "List of Shelter",
     content: <Shelters />,
   },
+  {
+    label: "Donation List",
+    value: "donationList",
+    title: "List of Donations",
+    content: <Donations />,
+  },
 ];
 
 const RescueHome = () => {
+  const gridColsClass = getGridColsClass(tabsData.length);
   return (
     <Tabs defaultValue="victimList" className="container my-10">
-      <TabsList className="grid w-full mx-auto my-4 grid-cols-2">
+      <TabsList className={`grid w-full mx-auto my-4 ${gridColsClass}`}>
         {tabsData.map((tab) => (
           <TabsTrigger key={tab.value} className="text-lg" value={tab.value}>
             {tab.label}

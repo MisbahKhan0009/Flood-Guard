@@ -23,7 +23,7 @@ const developers = [
     id: 3,
     name: "Aritra Islam Saswato",
     devId: "2132629642",
-    image: "https://via.placeholder.com/150",
+    image: "https://avatars.githubusercontent.com/u/184808406?v=4",
     contribution:
       "Led the design and optimization of database structures, ensuring efficient storage, retrieval, and management of data. Developed normalized schemas, implemented indexing strategies, and optimized queries for faster performance. ",
   },
@@ -37,9 +37,7 @@ const DeveloperCard = ({ developer }) => {
         alt={`${developer.name}'s profile`}
         className="w-24 h-24 rounded-full mx-auto"
       />
-      <h3 className="text-2xl font-light mt-4 text-center">
-        {developer.name}
-      </h3>
+      <h3 className="text-2xl font-light mt-4 text-center">{developer.name}</h3>
       <p className="text text-center">ID: {developer.devId}</p>
       <div className="mt-4 text-center">
         <p className="text-lg font-bold">Contribution:</p>

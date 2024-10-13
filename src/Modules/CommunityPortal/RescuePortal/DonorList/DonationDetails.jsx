@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import AdditionalInfoTable from "../../../../components/ui/AdditionalInfoTable";
-
+import { formatDate } from "../../../../utils/dateFormatter";
 // ShelterDetails Component to display each row with collapsible data
-const ShelterDetails = ({ row }) => {
+const DonationDetails = ({ row }) => {
   const [open, setOpen] = useState(false);
 
   const additionalInfo = [
-    { label: "Address Upazila", value: row.address_upazila },
-    { label: "Address District", value: row.address_district },
-    {
-      label: "Exact Location",
-      value: ["View Location", "Get Directions"], // For handling the map actions
-    },
-
-    { label: "Required Food", value: row.required_food },
-    { label: "Required Medicine", value: row.required_medicine },
-    { label: "Medical Support", value: row.medical_support },
+    { label: "Name", value: row.donor_name },
+    { label: "Donation Type", value: row.donation_type },
+    { label: "Quantity", value: row.quantity },
+    { label: "Date Received", value: formatDate(row.date_received) },
+    { label: "Notes", value: row.notes },
   ];
 
   return (
@@ -30,11 +25,11 @@ const ShelterDetails = ({ row }) => {
             {open ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
         </td>
-        <td className="pb-1">{row.name}</td>
-        <td className="pb-1">{row.address_area}</td>
-        <td className="text-center">{row.number_of_children}</td>
-        <td className="text-center">{row.number_of_women}</td>
-        <td className="text-center">{row.number_of_mothers}</td>
+        <td className="pb-1">{row.donor_name}</td>
+        <td className="pb-1">{row.donation_type}</td>
+        <td className="text-center">{row.quantity}</td>
+        <td className="text-center">{formatDate(row.date_received)}</td>
+        
       </tr>
 
       {open && (
@@ -46,4 +41,4 @@ const ShelterDetails = ({ row }) => {
     </>
   );
 };
-export default ShelterDetails;
+export default DonationDetails;
