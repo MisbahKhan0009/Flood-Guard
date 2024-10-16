@@ -86,7 +86,7 @@ const Login = () => {
         <div className="bg-gradient-to-r from-transparent via-primary dark:via-primary to-transparent my-10 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
-          <Button
+          {/* <Button
             variant="submit"
             className="w-full"
             onClick={handleGoogleSignIn}
@@ -96,7 +96,7 @@ const Login = () => {
               Sign in with Google
             </span>
             <BottomGradient />
-          </Button>
+          </Button> */}
           <div>
             <p className="text-center text-primary font-light">
               Doesn't have an account?{" "}

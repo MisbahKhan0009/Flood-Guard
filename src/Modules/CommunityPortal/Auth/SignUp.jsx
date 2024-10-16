@@ -1,10 +1,10 @@
 // "use client";
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { LabelInputContainer } from "../../../components/ui/LabelInputContainer";
-import { BackgroundGradient } from "../../../components/ui/background-gradient";
 import {
   Select,
   SelectContent,
@@ -16,17 +16,16 @@ import {
 } from "../../../components/ui/select";
 import { BottomGradient } from "../../../components/ui/BottomGradient";
 import { cn } from "@/lib/utils";
-import { FaGoogle } from "react-icons/fa";
 import { inputFields } from "./InputFields";
 import { AuthContext } from "../../../context/AuthProvider";
-import logger from "../../../utils/logger";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { data } from "autoprefixer";
 
 const Signup = () => {
   const { user, createUser, loading } = useContext(AuthContext);
   const [role, setRole] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSelectChange = (value) => {
     setRole(value);
@@ -95,8 +94,8 @@ const Signup = () => {
       // form.reset();
       setRole("");
 
-      if (user && role === "rescuer") {
-        navigate("/rescuer-portal");
+      if (user) {
+        navigate("/rescue-portal");
       } else if (user && role === "victim") {
         navigate("/victim-portal");
       } else {
@@ -104,21 +103,8 @@ const Signup = () => {
       }
     } catch (err) {
       console.error(err);
-      // toast.error("Error during sign-up");
     }
   };
-
-  // const handleGoogleSignIn = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const result = await googleSignIn();
-  //     const user = result.user;
-  //     toast.success("User signed in successfully");
-  //   } catch (err) {
-  //     toast.error("Error during Google sign-in");
-  //     console.error(`Error during Google sign-in: ${err.message}`);
-  //   }
-  // };
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl my-12 p-4 md:p-8 shadow-input bg-primary bg-opacity-15">

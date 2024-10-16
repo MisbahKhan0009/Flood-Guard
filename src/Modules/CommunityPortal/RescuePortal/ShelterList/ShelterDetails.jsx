@@ -13,7 +13,6 @@ const ShelterDetails = ({ row }) => {
       label: "Exact Location",
       value: ["View Location", "Get Directions"], // For handling the map actions
     },
-
     { label: "Required Food", value: row.required_food },
     { label: "Required Medicine", value: row.required_medicine },
     { label: "Medical Support", value: row.medical_support },

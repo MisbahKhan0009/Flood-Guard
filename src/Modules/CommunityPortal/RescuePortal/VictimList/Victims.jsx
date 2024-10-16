@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { debounce } from "lodash";
 import Pagination from "../../../../components/ui/Pagination";
 import Table from "../../../../components/ui/table";
@@ -28,7 +27,6 @@ const Victims = () => {
     const fetchVictims = async () => {
       try {
         const offset = pageNumber * rowsPerPage;
-
         const response = await axios.get("http://localhost:3000/api/victims", {
           params: {
             search: searchTerm || "",
@@ -69,6 +67,7 @@ const Victims = () => {
     setRowsPerPage(+event.target.value);
     setPageNumber(0);
   };
+  
   const renderVictimRow = (victim) => (
     <VictimDetails key={victim.id} row={victim} />
   );
@@ -87,7 +86,6 @@ const Victims = () => {
         />
       </div>
 
-      {/* Table */}
       <Table
         headers={headers}
         data={victims}

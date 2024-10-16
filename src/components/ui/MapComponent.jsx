@@ -2,8 +2,6 @@ import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
-// Import marker icon images
 import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 import markerIconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";

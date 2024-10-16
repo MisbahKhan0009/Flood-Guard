@@ -10,7 +10,7 @@ const PrivateRoute = () => {
 
   console.log("User data: ", userData);
   console.log("User: ", user);
-  if (user) {
+  if (!user) {
     return <Navigate to="/login" />; // If not authenticated, redirect to login
   }
 

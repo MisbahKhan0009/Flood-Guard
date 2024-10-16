@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import AdditionalInfoTable from "../../../../components/ui/AdditionalInfoTable";
 import { formatDate } from "../../../../utils/dateFormatter";
-// ShelterDetails Component to display each row with collapsible data
+
 const DonationDetails = ({ row }) => {
   const [open, setOpen] = useState(false);
 
@@ -29,7 +29,6 @@ const DonationDetails = ({ row }) => {
         <td className="pb-1">{row.donation_type}</td>
         <td className="text-center">{row.quantity}</td>
         <td className="text-center">{formatDate(row.date_received)}</td>
-        
       </tr>
 
       {open && (

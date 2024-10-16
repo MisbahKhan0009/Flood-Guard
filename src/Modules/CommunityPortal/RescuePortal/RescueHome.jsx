@@ -7,7 +7,7 @@ import { getGridColsClass } from "../../../utils/gridColsCalculator";
 
 const tabsData = [
   {
-    label: "Victims",
+    label: "Victim List",
     value: "victimList",
     title: "List of Victims",
     content: <Victims />,

@@ -20,7 +20,6 @@ const Donations = () => {
     { label: "Donation Type", field: "donation_type", sortable: true },
     { label: "Quantity", field: "quantity", sortable: true },
     { label: "Date Received", field: "date_received", sortable: true },
-    
   ];
 
   const handleChangePage = (newPage) => {
@@ -32,11 +31,22 @@ const Donations = () => {
     setPageNumber(0);
   };
 
+  const handleSearchInput = debounce((event) => {
+    setSearchTerm(event.target.value);
+    setPageNumber(0);
+  }, 300);
+
+  const handleSort = (field) => {
+    const newSortOrder =
+      sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(newSortOrder);
+  };
+
   useEffect(() => {
     const fetchDonations = async () => {
       try {
         const offset = pageNumber * rowsPerPage;
-
         const response = await axios.get(
           "http://localhost:3000/api/donations",
           {
@@ -60,17 +70,6 @@ const Donations = () => {
     fetchDonations();
   }, [searchTerm, searchField, sortField, sortOrder, pageNumber, rowsPerPage]);
 
-  const handleSearchInput = debounce((event) => {
-    setSearchTerm(event.target.value);
-    setPageNumber(0);
-  }, 300);
-
-  const handleSort = (field) => {
-    const newSortOrder =
-      sortField === field && sortOrder === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortOrder(newSortOrder);
-  };
   const renderVictimRow = (victim) => (
     <DonationDetails key={victim.id} row={victim} />
   );

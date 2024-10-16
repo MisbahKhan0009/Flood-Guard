@@ -28,13 +28,13 @@ const AdditionalInfoTable = ({
                     {info.label === "Exact Location" ? (
                       <>
                         <button
-                          className="text-blue-500 mr-4"
+                          className="text-blue-500 underline mr-4"
                           onClick={() => setIsMapOpen(true)}
                         >
                           {info.value[0]}
                         </button>
                         <button
-                          className="text-blue-500"
+                          className="text-blue-500 underline"
                           onClick={() => setIsDirectionOpen(true)}
                         >
                           {info.value[1]}

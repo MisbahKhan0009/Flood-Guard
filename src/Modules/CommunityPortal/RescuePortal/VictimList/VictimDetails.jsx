@@ -42,7 +42,7 @@ const VictimDetails = ({ row }) => {
           <Badge
             variant={
               row.danger_level === "High"
-                ? "destructive"
+                ? "destructive" 
                 : row.danger_level === "Medium"
                   ? "warning"
                   : "success"
