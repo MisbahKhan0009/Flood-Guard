@@ -24,10 +24,31 @@ import { Loader2 } from "lucide-react";
 const Signup = () => {
   const { user, createUser, loading } = useContext(AuthContext);
   const [role, setRole] = useState("");
+  const [location, setLocation] = useState({ lat: null, long: null });
 
   const navigate = useNavigate();
 
+  // Function to get the user's location
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+          setLocation({ lat, long });
+        },
+        (error) => {
+          toast.error("Location access denied.");
+          console.error("Error retrieving location: ", error);
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   const handleSelectChange = (value) => {
+    setRole("");
     setRole(value);
   };
 
@@ -39,10 +60,8 @@ const Signup = () => {
     const firstName = form.firstname.value;
     const lastName = form.lastname.value;
 
-    console.log(`User signed up as ${role}`, "info");
-    console.log("email: ", email);
-    console.log("password: ", password);
-    console.log("role: ", role);
+    // Trigger location retrieval
+    getLocation();
 
     if (!role) {
       toast.error("Please select a role.");
@@ -52,7 +71,7 @@ const Signup = () => {
     try {
       const result = await createUser(email, password);
       const user = result.user;
-      console.log(user);
+
       toast.success(`User signed up as ${role} successfully`);
 
       // Prepare data for API call
@@ -64,14 +83,18 @@ const Signup = () => {
       const userData = {
         name: `${firstName} ${lastName}`,
         email: email,
+        latitude: location.lat,
+        longitude: location.long,
       };
       const userDataToSave = {
         name: `${firstName} ${lastName}`,
         email: email,
         role: role,
+        latitude: location.lat,
+        longitude: location.long,
       };
 
-      // API call to save user data
+      // API call to save user data including location
       const apiResponse = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -91,10 +114,10 @@ const Signup = () => {
         sessionStorage.setItem("userData", JSON.stringify(userDataToSave));
       }
 
-      // form.reset();
       setRole("");
 
-      if (user) {
+      // Navigate based on role and user creation success
+      if (user && role === "rescuer") {
         navigate("/rescue-portal");
       } else if (user && role === "victim") {
         navigate("/victim-portal");
@@ -174,23 +197,6 @@ const Signup = () => {
 
         <div className="bg-gradient-to-r from-transparent via-primary dark:via-primary to-transparent my-10 h-[1px] w-full"></div>
 
-        {/* <div className="flex flex-col space-y-4">
-          
-          <Button
-            variant="submit"
-            className="w-full"
-            onClick={handleGoogleSignIn}
-            disabled={googleLoading}
-          >
-            <FaGoogle className="h-4 w-4 font-thin text-primary me-2" />
-            <span className="text-primary text-lg font-light">
-              {googleLoading
-                ? "Signing in with Google..."
-                : "Sign in with Google"}
-            </span>
-            <BottomGradient />
-          </Button> */}
-
         <div>
           <p className="text-center text-primary font-light">
             Already have an account?{" "}
@@ -204,7 +210,6 @@ const Signup = () => {
               Log in
             </a>
           </p>
-          {/* </div> */}
         </div>
       </form>
     </div>

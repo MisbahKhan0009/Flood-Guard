@@ -4,28 +4,12 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import { ThreeCircles } from "react-loader-spinner";
+import { getUserLocation } from "../../utils/getUserLocation";
 
 const DirectionsMap = ({ destination }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
 
-  const getUserLocation = () => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentLocation([latitude, longitude]); // Set state here
-            resolve([latitude, longitude]);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      } else {
-        reject(new Error("Geolocation is not supported by this browser."));
-      }
-    });
-  };
+ 
 
   useEffect(() => {
     getUserLocation().catch((error) => {
