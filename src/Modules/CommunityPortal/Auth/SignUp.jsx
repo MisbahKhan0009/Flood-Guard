@@ -1,4 +1,3 @@
-// "use client";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Label } from "../../../components/ui/label";
@@ -21,34 +20,35 @@ import { AuthContext } from "../../../context/AuthProvider";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-const Signup = () => {
-  const { user, createUser, loading } = useContext(AuthContext);
-  const [role, setRole] = useState("");
-  const [location, setLocation] = useState({ lat: null, long: null });
-
-  const navigate = useNavigate();
-
-  // Function to get the user's location
-  const getLocation = () => {
+// Function to get user's location as a promise
+export const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const lat = position.coords.latitude;
-          const long = position.coords.longitude;
-          setLocation({ lat, long });
+          const { latitude, longitude } = position.coords;
+          console.log("Latitude:", latitude);
+          console.log("Longitude:", longitude);
+          resolve([latitude, longitude]);
         },
         (error) => {
-          toast.error("Location access denied.");
-          console.error("Error retrieving location: ", error);
+          reject(error);
         }
       );
     } else {
-      toast.error("Geolocation is not supported by this browser.");
+      reject(new Error("Geolocation is not supported by this browser."));
     }
-  };
+  });
+};
+
+const Signup = () => {
+  const { user, createUser, loading } = useContext(AuthContext);
+  const [role, setRole] = useState("");
+  const [location, setLocation] = useState([null, null]);
+
+  const navigate = useNavigate();
 
   const handleSelectChange = (value) => {
-    setRole("");
     setRole(value);
   };
 
@@ -60,15 +60,18 @@ const Signup = () => {
     const firstName = form.firstname.value;
     const lastName = form.lastname.value;
 
-    // Trigger location retrieval
-    getLocation();
-
     if (!role) {
       toast.error("Please select a role.");
       return;
     }
 
     try {
+      // Get user location
+      const userLocation = await getUserLocation();
+      setLocation(userLocation); // Set location in state
+
+      const [latitude, longitude] = userLocation;
+
       const result = await createUser(email, password);
       const user = result.user;
 
@@ -83,15 +86,8 @@ const Signup = () => {
       const userData = {
         name: `${firstName} ${lastName}`,
         email: email,
-        latitude: location.lat,
-        longitude: location.long,
-      };
-      const userDataToSave = {
-        name: `${firstName} ${lastName}`,
-        email: email,
-        role: role,
-        latitude: location.lat,
-        longitude: location.long,
+        latitude: latitude,
+        longitude: longitude,
       };
 
       // API call to save user data including location
@@ -104,20 +100,18 @@ const Signup = () => {
       })
         .then((res) => res.json())
         .then((data) => toast.success(data.message));
-
-      // Check if the API call was successful
       if (apiResponse.error) {
         toast.error(apiResponse.error);
       } else {
-        // Clear session storage first
+        // Clear session storage and set new user data
+        userData.role = role;
         sessionStorage.clear();
-        sessionStorage.setItem("userData", JSON.stringify(userDataToSave));
+        sessionStorage.setItem("userData", JSON.stringify(userData));
       }
 
       setRole("");
 
-      // Navigate based on role and user creation success
-      if (user && role === "rescuer") {
+      if (user) {
         navigate("/rescue-portal");
       } else if (user && role === "victim") {
         navigate("/victim-portal");
@@ -125,7 +119,8 @@ const Signup = () => {
         navigate("/login");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error during sign up:", err);
+      toast.error("An error occurred during sign up. Please try again.");
     }
   };
 

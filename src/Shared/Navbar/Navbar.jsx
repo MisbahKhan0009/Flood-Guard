@@ -11,11 +11,12 @@ const Navbar = () => {
 
   if (location.pathname === "/community-portal") {
     if (user) {
-      // Redirect based on user role
-      if (user.role === "rescuer") {
-        navigate("/rescuer-dashboard");
-      } else if (user.role === "victim") {
-        navigate("/victim-dashboard");
+      // Redrect based on user role
+
+      if (sessionStorage.getItem("userData").role === "rescuer") {
+        navigate("/rescuer-portal");
+      } else if (sessionStorage.getItem("userData").role === "victim") {
+        navigate("/victim-poral");
       }
     } else {
       navigate("/login"); // Redirect to login if user is not authenticated
