@@ -104,19 +104,20 @@ const Signup = () => {
         toast.error(apiResponse.error);
       } else {
         // Clear session storage and set new user data
-        userData.role = role;
+
         sessionStorage.clear();
         sessionStorage.setItem("userData", JSON.stringify(userData));
+        userData.role = role;
       }
 
       setRole("");
 
-      if (user) {
+      if (user && role === "rescuer") {
         navigate("/rescue-portal");
       } else if (user && role === "victim") {
         navigate("/victim-portal");
       } else {
-        navigate("/login");
+        navigate("/signup");
       }
     } catch (err) {
       console.error("Error during sign up:", err);

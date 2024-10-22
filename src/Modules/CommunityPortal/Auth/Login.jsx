@@ -20,19 +20,36 @@ import {
   SelectValue,
 } from "../../../components/ui/select";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Add Axios for API calls
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [role, setRole] = useState("");
-
   const navigate = useNavigate();
 
   const handleSelectChange = (value) => {
-    setRole("");
     setRole(value);
   };
 
-  const handleLogin = (event) => {
+  const fetchUserDataByEmail = async (email) => {
+    let apiUrl = "";
+    if (role === "rescuer") {
+      apiUrl = `http://localhost:3000/api/rescuers/${email}`; // Replace with your actual API route
+    } else if (role === "victim") {
+      apiUrl = `http://localhost:3000/api/victims/${email}`; // Replace with your actual API route
+    }
+
+    try {
+      const response = await axios.get(apiUrl);
+      return response.data; // Return the user data
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching user data");
+      return null;
+    }
+  };
+
+  const handleLogin = async (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
@@ -43,27 +60,34 @@ const Login = () => {
       return;
     }
 
-    login(email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        toast.success("User logged in successfully");
-        if (user && role === "rescuer") {
-          navigate("/rescue-portal");
-        } else if (user && role === "victim") {
-          navigate("/victim-portal");
-        } else {
-          navigate("/login");
+    try {
+      const result = await login(email, password);
+      const user = result.user;
+
+      if (user) {
+        const userData = await fetchUserDataByEmail(email); // Fetch user data
+        if (userData) {
+          userData.role = role;
+          sessionStorage.setItem("userData", JSON.stringify(userData));
+          toast.success("User logged in successfully");
+
+          if (role === "rescuer") {
+            navigate("/rescue-portal");
+          } else if (role === "victim") {
+            navigate("/victim-portal");
+          } else {
+            navigate("/login");
+          }
         }
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error(err);
-        logger(`Error during login: ${err.message}`, "error", {
-          color: "#ff0000",
-          backgroundColor: "#f8d7da",
-        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Login failed");
+      logger(`Error during login: ${err.message}`, "error", {
+        color: "#ff0000",
+        backgroundColor: "#f8d7da",
       });
+    }
   };
 
   return (
@@ -117,7 +141,7 @@ const Login = () => {
         <div className="flex flex-col space-y-4">
           <div>
             <p className="text-center text-primary font-light">
-              Doesn't have an account?{" "}
+              Don't have an account?{" "}
               <a
                 href="/signup"
                 className={cn(

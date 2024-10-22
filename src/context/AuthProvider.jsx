@@ -21,7 +21,8 @@ export const AuthProvider = ({ children }) => {
         email,
         password
       );
-      setUser(result.user);
+      
+      
       return result;
     } finally {
       setLoading(false);
@@ -32,9 +33,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      setUser(result.user);
-      console.log(result);
-      console.log(result.user);
+  
       return result;
     } finally {
       setLoading(false);
