@@ -20,6 +20,9 @@ import { AuthContext } from "../../../context/AuthProvider";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
+// OpenCage API key from environment variable
+const openCageApiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+
 // Function to get user's location as a promise
 export const getUserLocation = () => {
   return new Promise((resolve, reject) => {
@@ -27,8 +30,6 @@ export const getUserLocation = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log("Latitude:", latitude);
-          console.log("Longitude:", longitude);
           resolve([latitude, longitude]);
         },
         (error) => {
@@ -39,6 +40,32 @@ export const getUserLocation = () => {
       reject(new Error("Geolocation is not supported by this browser."));
     }
   });
+};
+
+// Function to get the address from latitude and longitude using OpenCage API
+export const getAddressFromCoordinates = async (latitude, longitude) => {
+  const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${openCageApiKey}&language=en&pretty=1`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const result = data.results[0];
+      const formattedAddressParts = result.formatted.split(",");
+      const districtFormatted = result.components.state_district.split(" ");
+      return {
+        address_area: formattedAddressParts[0].trim(),
+        address_upazila: result.components.suburb || "",
+        address_district: districtFormatted[0].trim() || "",
+      };
+    } else {
+      throw new Error("No address found for the provided coordinates.");
+    }
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    throw error;
+  }
 };
 
 const Signup = () => {
@@ -72,8 +99,12 @@ const Signup = () => {
 
       const [latitude, longitude] = userLocation;
 
+      // Get address from the coordinates
+      const address = await getAddressFromCoordinates(latitude, longitude);
+
       const result = await createUser(email, password);
       const user = result.user;
+    
 
       toast.success(`User signed up as ${role} successfully`);
 
@@ -88,9 +119,12 @@ const Signup = () => {
         email: email,
         latitude: latitude,
         longitude: longitude,
+        address_area: address.address_area,
+        address_upazila: address.address_upazila,
+        address_district: address.address_district,
       };
 
-      // API call to save user data including location
+      // API call to save user data including location and address
       const apiResponse = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -104,10 +138,9 @@ const Signup = () => {
         toast.error(apiResponse.error);
       } else {
         // Clear session storage and set new user data
-
         sessionStorage.clear();
-        sessionStorage.setItem("userData", JSON.stringify(userData));
         userData.role = role;
+        sessionStorage.setItem("userData", JSON.stringify(userData));
       }
 
       setRole("");
