@@ -1,57 +1,93 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Label } from "../../../components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { LabelInputContainer } from "../../../components/ui/LabelInputContainer";
-import { BackgroundGradient } from "../../../components/ui/background-gradient";
 import { BottomGradient } from "../../../components/ui/BottomGradient";
 import { cn } from "@/lib/utils";
-import { FaGoogle } from "react-icons/fa";
 import { inputFields } from "./InputFields";
 import { AuthContext } from "../../../context/AuthProvider";
 import logger from "../../../utils/logger";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Add Axios for API calls
 
 const Login = () => {
-  const { googleSignIn, createUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleSelectChange = (value) => {
+    setRole(value);
+  };
+
+  const fetchUserDataByEmail = async (email) => {
+    let apiUrl = "";
+    if (role === "rescuer") {
+      apiUrl = `http://localhost:3000/api/rescuers/${email}`; // Replace with your actual API route
+    } else if (role === "victim") {
+      apiUrl = `http://localhost:3000/api/victims/${email}`; // Replace with your actual API route
+    }
+
+    try {
+      const response = await axios.get(apiUrl);
+      return response.data; // Return the user data
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching user data");
+      return null;
+    }
+  };
+
+  const handleLogin = async (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
 
-    createUser(email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        toast.success("User signed up successfully");
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error(err);
-        logger(`Error during sign-up: ${err.message}`, "error", {
-          color: "#ff0000",
-          backgroundColor: "#f8d7da",
-        });
-      });
-  };
+    if (!role) {
+      toast.error("Please select a role.");
+      return;
+    }
 
-  const handleGoogleSignIn = (event) => {
-    event.preventDefault();
-    googleSignIn()
-      .then((result) => {
-        const user = result.user;
-        toast.success("User signed in successfully");
-      })
-      .catch((err) => {
-        toast.error("Error during Google sign-in");
-        logger(`Error during Google sign-in: ${err.message}`, "error", {
-          color: "#ff0000",
-          backgroundColor: "#f8d7da",
-        });
+    try {
+      const result = await login(email, password);
+      const user = result.user;
+
+      if (user) {
+        const userData = await fetchUserDataByEmail(email); // Fetch user data
+        if (userData) {
+          userData.role = role;
+          sessionStorage.setItem("userData", JSON.stringify(userData));
+          toast.success("User logged in successfully");
+
+          if (role === "rescuer") {
+            navigate("/rescue-portal");
+          } else if (role === "victim") {
+            navigate("/victim-portal");
+          } else {
+            navigate("/login");
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Login failed");
+      logger(`Error during login: ${err.message}`, "error", {
+        color: "#ff0000",
+        backgroundColor: "#f8d7da",
       });
+    }
   };
 
   return (
@@ -73,7 +109,24 @@ const Login = () => {
               </LabelInputContainer>
             ))}
         </div>
-
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="role">Select Role</Label>
+          <Select onValueChange={handleSelectChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue
+                placeholder="Select a role"
+                className="placeholder:text-primary"
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>--Select Role--</SelectLabel>
+                <SelectItem value="victim">Victim</SelectItem>
+                <SelectItem value="rescuer">Rescuer</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </LabelInputContainer>
         <Button
           variant="submit"
           className="w-full text-lg font-light text-primary"
@@ -86,20 +139,9 @@ const Login = () => {
         <div className="bg-gradient-to-r from-transparent via-primary dark:via-primary to-transparent my-10 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
-          {/* <Button
-            variant="submit"
-            className="w-full"
-            onClick={handleGoogleSignIn}
-          >
-            <FaGoogle className="h-4 w-4 font-thin text-primary me-2" />
-            <span className="text-primary text-lg font-light">
-              Sign in with Google
-            </span>
-            <BottomGradient />
-          </Button> */}
           <div>
             <p className="text-center text-primary font-light">
-              Doesn't have an account?{" "}
+              Don't have an account?{" "}
               <a
                 href="/signup"
                 className={cn(

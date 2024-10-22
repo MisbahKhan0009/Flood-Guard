@@ -9,6 +9,7 @@ import CommunityHome from "../Modules/CommunityPortal/CommunityHome.jsx";
 import RescueHome from "../Modules/CommunityPortal/RescuePortal/RescueHome.jsx";
 import VictimHome from "../Modules/CommunityPortal/VictimPortal/VictimHome.jsx";
 import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
+import UpdateProfile from "../Modules/CommunityPortal/Auth/UpdateProfile.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "/victim-portal",
         element: <VictimHome />,
+      },
+      {
+        path: "/update-profile",
+        element: <UpdateProfile />,
       },
       {
         path: "/developers",

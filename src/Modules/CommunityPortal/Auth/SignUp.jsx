@@ -1,4 +1,3 @@
-// "use client";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Label } from "../../../components/ui/label";
@@ -21,9 +20,58 @@ import { AuthContext } from "../../../context/AuthProvider";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
+// OpenCage API key from environment variable
+const openCageApiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+
+// Function to get user's location as a promise
+export const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          resolve([latitude, longitude]);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } else {
+      reject(new Error("Geolocation is not supported by this browser."));
+    }
+  });
+};
+
+// Function to get the address from latitude and longitude using OpenCage API
+export const getAddressFromCoordinates = async (latitude, longitude) => {
+  const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${openCageApiKey}&language=en&pretty=1`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const result = data.results[0];
+      const formattedAddressParts = result.formatted.split(",");
+      const districtFormatted = result.components.state_district.split(" ");
+      return {
+        address_area: formattedAddressParts[0].trim(),
+        address_upazila: result.components.suburb || "",
+        address_district: districtFormatted[0].trim() || "",
+      };
+    } else {
+      throw new Error("No address found for the provided coordinates.");
+    }
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    throw error;
+  }
+};
+
 const Signup = () => {
   const { user, createUser, loading } = useContext(AuthContext);
   const [role, setRole] = useState("");
+  const [location, setLocation] = useState([null, null]);
 
   const navigate = useNavigate();
 
@@ -39,20 +87,25 @@ const Signup = () => {
     const firstName = form.firstname.value;
     const lastName = form.lastname.value;
 
-    console.log(`User signed up as ${role}`, "info");
-    console.log("email: ", email);
-    console.log("password: ", password);
-    console.log("role: ", role);
-
     if (!role) {
       toast.error("Please select a role.");
       return;
     }
 
     try {
+      // Get user location
+      const userLocation = await getUserLocation();
+      setLocation(userLocation); // Set location in state
+
+      const [latitude, longitude] = userLocation;
+
+      // Get address from the coordinates
+      const address = await getAddressFromCoordinates(latitude, longitude);
+
       const result = await createUser(email, password);
       const user = result.user;
-      console.log(user);
+    
+
       toast.success(`User signed up as ${role} successfully`);
 
       // Prepare data for API call
@@ -64,14 +117,14 @@ const Signup = () => {
       const userData = {
         name: `${firstName} ${lastName}`,
         email: email,
-      };
-      const userDataToSave = {
-        name: `${firstName} ${lastName}`,
-        email: email,
-        role: role,
+        latitude: latitude,
+        longitude: longitude,
+        address_area: address.address_area,
+        address_upazila: address.address_upazila,
+        address_district: address.address_district,
       };
 
-      // API call to save user data
+      // API call to save user data including location and address
       const apiResponse = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -81,28 +134,27 @@ const Signup = () => {
       })
         .then((res) => res.json())
         .then((data) => toast.success(data.message));
-
-      // Check if the API call was successful
       if (apiResponse.error) {
         toast.error(apiResponse.error);
       } else {
-        // Clear session storage first
+        // Clear session storage and set new user data
         sessionStorage.clear();
-        sessionStorage.setItem("userData", JSON.stringify(userDataToSave));
+        userData.role = role;
+        sessionStorage.setItem("userData", JSON.stringify(userData));
       }
 
-      // form.reset();
       setRole("");
 
-      if (user) {
+      if (user && role === "rescuer") {
         navigate("/rescue-portal");
       } else if (user && role === "victim") {
         navigate("/victim-portal");
       } else {
-        navigate("/login");
+        navigate("/signup");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error during sign up:", err);
+      toast.error("An error occurred during sign up. Please try again.");
     }
   };
 
@@ -174,23 +226,6 @@ const Signup = () => {
 
         <div className="bg-gradient-to-r from-transparent via-primary dark:via-primary to-transparent my-10 h-[1px] w-full"></div>
 
-        {/* <div className="flex flex-col space-y-4">
-          
-          <Button
-            variant="submit"
-            className="w-full"
-            onClick={handleGoogleSignIn}
-            disabled={googleLoading}
-          >
-            <FaGoogle className="h-4 w-4 font-thin text-primary me-2" />
-            <span className="text-primary text-lg font-light">
-              {googleLoading
-                ? "Signing in with Google..."
-                : "Sign in with Google"}
-            </span>
-            <BottomGradient />
-          </Button> */}
-
         <div>
           <p className="text-center text-primary font-light">
             Already have an account?{" "}
@@ -204,7 +239,6 @@ const Signup = () => {
               Log in
             </a>
           </p>
-          {/* </div> */}
         </div>
       </form>
     </div>
