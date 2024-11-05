@@ -60,7 +60,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full mx-auto my-12 p-6 rounded-xl shadow-lg bg-secondary">
+    <div className="w-10/12 mx-auto my-12 p-6 rounded-xl shadow-lg bg-secondary">
       <h2 className="text-3xl font-light text-center my-6">Profile</h2>
 
       <div className="flex flex-col items-center mb-6">
@@ -69,7 +69,7 @@ const Profile = () => {
           alt="Profile"
           className="w-32 h-32 rounded-full border-4 border-primary mb-4"
         />
-        <span className="text-lg font-semibold text-gray-800">
+        <span className="text-3xl font-semibold text-primary capitalize">
           {userData.name || "N/A"}
         </span>
       </div>
@@ -86,7 +86,7 @@ const Profile = () => {
           {Object.entries(userData).map(([key, value]) => (
             <tr key={key} className="border-b">
               <td className="p-2 text-primary capitalize">
-                {key.replace(/_/g, " ")}:
+                {key.replace(/_/g, " ")}
               </td>
               <td className="p-2 text-right text-primary">
                 {userData.role !== "victim" && key === "id" ? (
@@ -96,7 +96,7 @@ const Profile = () => {
                     type="text"
                     value={editableData[key] || ""}
                     onChange={(e) => handleChange(key, e.target.value)}
-                    className="border rounded p-1 text-primary"
+                    className="border rounded p-1 text-gray-800"
                   />
                 ) : (
                   <>
