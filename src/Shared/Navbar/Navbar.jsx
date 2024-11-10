@@ -81,7 +81,7 @@ const Navbar = () => {
             className="flex items-center justify-center space-x-2 focus:outline-none"
           >
             <img
-              src={`https://avatar.iran.liara.run/username?username=${name}&background=051224&color=cecedf&bold=false&length=1`}
+              src={`https://ui-avatars.com/api/?name=${name}&background=051224&color=cecedf&bold=false&length=1`}
               alt="Profile"
               className="h-12 w-12 rounded-full"
             />
@@ -91,21 +91,20 @@ const Navbar = () => {
           {/* Dropdown Menu */}
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 border border-secondary  bg-primary rounded-lg shadow-lg z-50">
-            <Link
-              to="/update-profile"
-              className="block px-4 py-2 hover:text-primary  hover:bg-secondary rounded-lg"
-              onClick={() => setDropdownOpen(false)}
-            >
-              Update Profile
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="block w-full text-left px-4 py-2 hover:text-primary hover:bg-secondary rounded-lg"
-            >
-              Logout
-            </button>
-          </div>
-          
+              <Link
+                to="/update-profile"
+                className="block px-4 py-2 hover:text-primary  hover:bg-secondary rounded-lg"
+                onClick={() => setDropdownOpen(false)}
+              >
+                Update Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left px-4 py-2 hover:text-primary hover:bg-secondary rounded-lg"
+              >
+                Logout
+              </button>
+            </div>
           )}
         </div>
       )}

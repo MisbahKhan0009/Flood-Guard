@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa"; // Import an edit icon from react-icons
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
@@ -8,15 +7,30 @@ const Profile = () => {
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("userData");
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setUserData(parsedData);
-      setEditableData(parsedData); // Initialize editableData with userData
-    }
+    const parsedData = storedData ? JSON.parse(storedData) : {};
+
+    // Ensure all required fields are present, set to "N/A" if missing
+    const requiredFields = [
+      "NID",
+      "name",
+      "age",
+      "mobile",
+      "organization",
+      "gender",
+      "skill",
+      "notes",
+    ];
+    const completeData = requiredFields.reduce((data, field) => {
+      data[field] = parsedData[field] || "N/A";
+      return data;
+    }, {});
+
+    setUserData(completeData);
+    setEditableData(completeData); // Initialize editableData with completeData
   }, []);
 
   // Prepare profile picture URL
-  const profilePictureUrl = `https://avatar.iran.liara.run/username?username=${userData.name || "User"}`;
+  const profilePictureUrl = `https://ui-avatars.com/api/?name=${userData.name || "User"}`;
 
   // Function to handle input change
   const handleChange = (key, value) => {
@@ -33,26 +47,40 @@ const Profile = () => {
 
   // Function to handle update API call
   const handleUpdate = async () => {
+    const userId = JSON.parse(sessionStorage.getItem("userData")).userId; // Retrieve userId from userData
+    console.log("Request Body:", JSON.stringify(editableData));
+
+    // Construct API URL based on role
     const apiUrl =
-      userData.role === "victim"
-        ? "http://localhost:3000/api/victims/"
-        : "http://localhost:3000/api/rescuers/";
+      JSON.parse(sessionStorage.getItem("userData")).role === "victim"
+        ? `http://localhost:3000/api/victims/${userId}`
+        : `http://localhost:3000/api/rescuers/${userId}`;
+    console.log("API URL:", apiUrl);
+
+    // Only send fields that have changed (filter out "N/A" values)
+    const updateData = Object.keys(editableData).reduce((acc, key) => {
+      if (editableData[key] !== "N/A") {
+        acc[key] = editableData[key];
+      }
+      return acc;
+    }, {});
 
     try {
       const response = await fetch(apiUrl, {
-        method: "PUT", // Use PUT or PATCH as necessary
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(editableData),
+        body: JSON.stringify(updateData),
       });
+
       if (response.ok) {
-        // Handle successful update (e.g., show a success message)
         console.log("Profile updated successfully");
         setUserData(editableData); // Update the displayed userData
         handleEditToggle(); // Close the edit mode
       } else {
-        console.error("Failed to update profile");
+        const errorText = await response.text();
+        console.error("Failed to update profile:", response.status, errorText);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -89,9 +117,7 @@ const Profile = () => {
                 {key.replace(/_/g, " ")}
               </td>
               <td className="p-2 text-right text-primary">
-                {userData.role !== "victim" && key === "id" ? (
-                  <span>{value}</span>
-                ) : isEditing ? (
+                {isEditing ? (
                   <input
                     type="text"
                     value={editableData[key] || ""}
@@ -99,15 +125,7 @@ const Profile = () => {
                     className="border rounded p-1 text-gray-800"
                   />
                 ) : (
-                  <>
-                    {value || "N/A"}
-                    {key !== "id" && key !== "role" && (
-                      <FaEdit
-                        className="inline ml-2 cursor-pointer text-primary hover:text-blue-500"
-                        onClick={handleEditToggle}
-                      />
-                    )}
-                  </>
+                  value || "N/A"
                 )}
               </td>
             </tr>
@@ -115,16 +133,23 @@ const Profile = () => {
         </tbody>
       </table>
 
-      {isEditing && (
-        <div className="mt-6">
+      <div className="mt-6 flex justify-center">
+        {isEditing ? (
           <button
             onClick={handleUpdate}
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="hover:bg-secondary hover:text-white px-4 py-2 rounded bg-primary text-secondary border border-primary mr-4"
           >
             Update Profile
           </button>
-        </div>
-      )}
+        ) : (
+          <button
+            onClick={handleEditToggle}
+            className="hover:bg-secondary hover:text-white px-4 py-2 rounded bg-primary text-secondary border border-primary"
+          >
+            Edit Profile
+          </button>
+        )}
+      </div>
     </div>
   );
 };
