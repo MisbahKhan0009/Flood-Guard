@@ -72,6 +72,7 @@ const Signup = () => {
   const { user, createUser, loading } = useContext(AuthContext);
   const [role, setRole] = useState("");
   const [location, setLocation] = useState([null, null]);
+  const [userId, setUserId] = useState("");
 
   const navigate = useNavigate();
 
@@ -104,7 +105,6 @@ const Signup = () => {
 
       const result = await createUser(email, password);
       const user = result.user;
-    
 
       toast.success(`User signed up as ${role} successfully`);
 
@@ -131,15 +131,20 @@ const Signup = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
-      })
-        .then((res) => res.json())
-        .then((data) => toast.success(data.message));
-      if (apiResponse.error) {
-        toast.error(apiResponse.error);
+      });
+
+      const data = await apiResponse.json();
+
+      if (data.error) {
+        toast.error(data.error);
       } else {
-        // Clear session storage and set new user data
+        const userId = data.user_id;
+        setUserId(userId); // Update state with the user ID
+
+        // Add userId to userData and save to sessionStorage
+        userData.userId = userId; // Add the userId to the userData object
+        userData.role = role; // Add role to userData for session storage
         sessionStorage.clear();
-        userData.role = role;
         sessionStorage.setItem("userData", JSON.stringify(userData));
       }
 
