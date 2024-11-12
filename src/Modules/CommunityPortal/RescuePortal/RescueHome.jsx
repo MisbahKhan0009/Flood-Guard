@@ -4,6 +4,8 @@ import Victims from "./VictimList/Victims";
 import Shelters from "./ShelterList/Shelters";
 import Donations from "./DonorList/Donors";
 import { getGridColsClass } from "../../../utils/gridColsCalculator";
+import RescueAssignments from "./RescueAssignment/RescueAssignments";
+import EmergencyAlerts from "./EmergencyAlert/EmergencyAlerts";
 
 const tabsData = [
   {
@@ -23,6 +25,18 @@ const tabsData = [
     value: "donationList",
     title: "List of Donations",
     content: <Donations />,
+  },
+  {
+    label: "Rescue Assignment List",
+    value: "rescueAssignmentList",
+    title: "Requested Rescue",
+    content: <RescueAssignments />,
+  },
+  {
+    label: "Emergency Alert List",
+    value: "emergencyAlertList",
+    title: "Emergency Alert List",
+    content: <EmergencyAlerts />,
   },
 ];
 

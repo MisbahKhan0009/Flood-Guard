@@ -7,6 +7,7 @@ import Shelters from "../RescuePortal/ShelterList/Shelters";
 import DeadBodies from "./DeadBodies/DeadBodies";
 import Modal from "../../../components/ui/modal";
 import { toast } from "sonner";
+import Hospitals from "./Hospitals/Hospitals";
 
 const tabsData = [
   {
@@ -20,6 +21,12 @@ const tabsData = [
     value: "deadbodyList",
     title: "List of Deadbodies",
     content: <DeadBodies />,
+  },
+  {
+    label: "Hospitals List",
+    value: "hospitalsList",
+    title: "List of Hospitals",
+    content: <Hospitals />,
   },
 ];
 
@@ -196,6 +203,11 @@ const VictimHome = () => {
   };
 
   const toggleModal = () => setShowModal((prevShowModal) => !prevShowModal);
+  const formatKey = (key) => {
+    return key
+      .replace(/_/g, " ") // Replace underscores with spaces
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+  };
 
   return (
     <section>
@@ -269,15 +281,18 @@ const VictimHome = () => {
         ))}
       </Tabs>
 
-      <Modal isOpen={showModal} onClose={toggleModal} className="bg-secondary">
-        <div className="overflow-y-auto max-h-[80vh]">
-          <h2 className="text-secondary text-2xl font-semibold mb-4">
+      <Modal isOpen={showModal} onClose={toggleModal} className="w-1/2">
+        <div className="overflow-y-auto w-4/5 mx-auto my-6  max-h-[80vh]">
+          <h2 className="text-secondary text-4xl text text-center font-museo font-semibold my-4">
             Ask for Help
           </h2>
           <form>
             {Object.keys(formData).map((key) => (
-              <div key={key} className="mb-4">
-                <label className="text-secondary font-medium">{key}</label>
+              <div key={key} className="mb-4 text-base">
+                <label className="text-secondary font-medium">
+                  {formatKey(key)}
+                </label>
+
                 <input
                   type="text"
                   name={key}
@@ -291,7 +306,9 @@ const VictimHome = () => {
                     key === "address_upazila" ||
                     key === "address_district" ||
                     key === "role" ||
-                    key === "userId"
+                    key === "userId" ||
+                    key === "victim_id" ||
+                    key === "email"
                   }
                   className={`w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary ${
                     key === "latitude" ||
@@ -301,7 +318,9 @@ const VictimHome = () => {
                     key === "address_upazila" ||
                     key === "address_district" ||
                     key === "role" ||
-                    key === "userId"
+                    key === "userId" ||
+                    key === "victim_id" ||
+                    key === "email"
                       ? "cursor-not-allowed text-primary bg-gray-100" // Apply extra classes for disabled input
                       : ""
                   }`}
@@ -309,16 +328,16 @@ const VictimHome = () => {
               </div>
             ))}
             <Button
-              variant={"default"}
+              variant={"secondary"}
               onClick={handleSubmitHelpRequest}
-              className="w-3/4 mx-auto mt-4"
+              className="w-1/4 text-lg mx-auto mt-4 me-4"
             >
               Submit
             </Button>
             <Button
-              variant={"secondary"}
+              variant={"default"}
               onClick={toggleModal}
-              className="w-3/4 mt-4"
+              className="w-1/4 text-lg mx-auto mt-4"
             >
               Cancel
             </Button>
