@@ -20,11 +20,12 @@ import {
   SelectValue,
 } from "../../../components/ui/select";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Add Axios for API calls
+import axios from "axios";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   const handleSelectChange = (value) => {
@@ -34,14 +35,18 @@ const Login = () => {
   const fetchUserDataByEmail = async (email) => {
     let apiUrl = "";
     if (role === "rescuer") {
-      apiUrl = `http://localhost:3000/api/rescuers/${email}`; // Replace with your actual API route
+      apiUrl = `http://localhost:3000/api/rescuers/${email}`;
     } else if (role === "victim") {
-      apiUrl = `http://localhost:3000/api/victims/${email}`; // Replace with your actual API route
+      apiUrl = `http://localhost:3000/api/victims/${email}`;
     }
 
     try {
       const response = await axios.get(apiUrl);
-      return response.data; // Return the user data
+      const data = response.data;
+
+      // Assign a consistent `userId` field
+      const userId = data.victim_id || data.rescuer_id;
+      return { ...data, userId }; // Return data with unified userId field
     } catch (error) {
       console.error(error);
       toast.error("Error fetching user data");
@@ -65,18 +70,21 @@ const Login = () => {
       const user = result.user;
 
       if (user) {
-        const userData = await fetchUserDataByEmail(email); // Fetch user data
+        const userData = await fetchUserDataByEmail(email);
         if (userData) {
-          userData.role = role;
+          // Update state and session storage with unified userId
+          setUserId(userData.userId);
+          userData.role = role; // Add role to userData
+
+          sessionStorage.clear();
           sessionStorage.setItem("userData", JSON.stringify(userData));
           toast.success("User logged in successfully");
 
+          // Navigate based on role
           if (role === "rescuer") {
             navigate("/rescue-portal");
           } else if (role === "victim") {
             navigate("/victim-portal");
-          } else {
-            navigate("/login");
           }
         }
       }

@@ -6,6 +6,7 @@ import { Button } from "../../../components/ui/button";
 import Shelters from "../RescuePortal/ShelterList/Shelters";
 import DeadBodies from "./DeadBodies/DeadBodies";
 import Modal from "../../../components/ui/modal";
+import { toast } from "sonner";
 
 const tabsData = [
   {
@@ -57,10 +58,37 @@ const VictimHome = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmitHelpRequest = async () => {
+  const handleSubmitHelpRequest = async (event) => {
+    event.preventDefault();
     const userData = JSON.parse(sessionStorage.getItem("userData"));
+
     if (userData) {
-      const updatedData = { ...userData, ...formData };
+      // Define only the fields you need in the updated data
+      const updatedData = {
+        NID: formData.NID || userData.NID,
+        address_area: formData.address_area || userData.address_area,
+        address_district:
+          formData.address_district || userData.address_district,
+        address_upazila: formData.address_upazila || userData.address_upazila,
+        age: formData.age || userData.age,
+        danger_level: formData.danger_level || userData.danger_level,
+        email: formData.email || userData.email,
+        gender: formData.gender || userData.gender,
+        health_status: formData.health_status || userData.health_status,
+        latitude: formData.latitude || userData.latitude,
+        longitude: formData.longitude || userData.longitude,
+        mobile: formData.mobile || userData.mobile,
+        name: formData.name || userData.name,
+        number_of_family_members:
+          formData.number_of_family_members ||
+          userData.number_of_family_members,
+        rescue_status: formData.rescue_status || userData.rescue_status,
+        rescue_time: formData.rescue_time || userData.rescue_time,
+        resources_needed:
+          formData.resources_needed || userData.resources_needed,
+      };
+
+      console.log("Updated Data:", updatedData);
 
       try {
         const victimResponse = await fetch(
@@ -72,6 +100,7 @@ const VictimHome = () => {
           }
         );
 
+        // Rescue assignment logic, as before
         const rescueResponse = await fetch(
           "http://localhost:3000/api/rescue-assignments",
           {
@@ -79,14 +108,22 @@ const VictimHome = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               victim_id: userData.userId,
-              rescue_time: formData.rescue_time || new Date().toISOString(),
               status: "Pending",
             }),
           }
         );
 
         if (victimResponse.ok && rescueResponse.ok) {
-          alert("Help request submitted successfully.");
+          // Update sessionStorage with the newly updated fields
+          sessionStorage.setItem(
+            "userData",
+            JSON.stringify({
+              ...userData,
+              ...updatedData,
+            })
+          );
+
+          toast.success("Help request submitted successfully.");
           setShowModal(false);
         } else {
           console.error("Failed to submit help request");
@@ -129,27 +166,6 @@ const VictimHome = () => {
       setLoading(false);
     }
   };
-
-  //  import axios from "axios";
-
-  // const getPrediction = async (requestBody) => {
-  //     console.log("Request Body:", JSON.stringify(requestBody));
-
-  //     try {
-  //         const response = await axios.post("http://127.0.0.1:5050/predict", requestBody, {
-  //             headers: {
-  //                 "Content-Type": "application/json",
-  //                 "Accept": "application/json"
-  //             },
-  //         });
-
-  //         console.log("Received Data:", response.data);
-  //         setPrediction(response.data); // Update state with received data
-  //     } catch (error) {
-  //         console.error("Error fetching prediction:", error.message || error);
-  //         setPrediction({ error: "Failed to fetch prediction." });
-  //     }
-  // };
 
   const getPrediction = async (requestBody) => {
     console.log("Request Body:", JSON.stringify(requestBody));
@@ -267,21 +283,42 @@ const VictimHome = () => {
                   name={key}
                   value={formData[key]}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg border border-primary text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                  disabled={
+                    key === "latitude" ||
+                    key === "longitude" ||
+                    key === "name" ||
+                    key === "address_area" ||
+                    key === "address_upazila" ||
+                    key === "address_district" ||
+                    key === "role" ||
+                    key === "userId"
+                  }
+                  className={`w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary ${
+                    key === "latitude" ||
+                    key === "longitude" ||
+                    key === "name" ||
+                    key === "address_area" ||
+                    key === "address_upazila" ||
+                    key === "address_district" ||
+                    key === "role" ||
+                    key === "userId"
+                      ? "cursor-not-allowed text-primary bg-gray-100" // Apply extra classes for disabled input
+                      : ""
+                  }`}
                 />
               </div>
             ))}
             <Button
               variant={"default"}
               onClick={handleSubmitHelpRequest}
-              className="w-full mt-4"
+              className="w-3/4 mx-auto mt-4"
             >
               Submit
             </Button>
             <Button
               variant={"secondary"}
               onClick={toggleModal}
-              className="w-full mt-4"
+              className="w-3/4 mt-4"
             >
               Cancel
             </Button>
