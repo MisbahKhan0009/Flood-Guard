@@ -164,6 +164,7 @@ const VictimHome = () => {
         Temp_Diff: dayForecast.maxtemp_c - dayForecast.mintemp_c,
         Rainfall_Squared: Math.pow(dayForecast.totalprecip_mm, 2),
       };
+      
 
       getPrediction(requestBody);
     } catch (error) {

@@ -11,7 +11,7 @@ const Badge = ({ variant, children }) => {
 
   return (
     <span
-      className={`w-24 px-2 my-1 bg-opacity-25 border rounded-xl  text-sm text-center inline-block ${variantClasses[variant]}`}
+      className={`w-24 px-2 my-1 bg-opacity-10 border rounded-xl  text-sm text-center inline-block ${variantClasses[variant]}`}
     >
    
        {children}

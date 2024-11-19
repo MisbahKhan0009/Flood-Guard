@@ -17,7 +17,7 @@ const Profile = () => {
       "mobile",
       "organization",
       "gender",
-      "skill",
+      "skills",
       "notes",
     ];
     const completeData = requiredFields.reduce((data, field) => {

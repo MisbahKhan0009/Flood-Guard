@@ -73,7 +73,7 @@ const Shelters = () => {
     setSortOrder(newSortOrder);
   };
   const renderVictimRow = (victim) => (
-    <ShelterDetails key={victim.id} row={victim} />
+    <ShelterDetails key={victim.victim_id} row={victim} />
   );
 
   return (

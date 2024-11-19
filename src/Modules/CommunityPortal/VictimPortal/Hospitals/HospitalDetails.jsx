@@ -8,7 +8,10 @@ const HospitalDetails = ({ row }) => {
 
   const additionalInfo = [
     { label: "Hospital Name", value: row.name },
-    { label: "Location", value: row.location },
+    {
+      label: "Exact Location",
+      value: ["View Location", "Get Directions"], // For handling the map actions
+    },
     { label: "Beds", value: row.bed },
     { label: "Available Beds", value: row.bed_available },
     { label: "Contact", value: row.contact || "N/A" },

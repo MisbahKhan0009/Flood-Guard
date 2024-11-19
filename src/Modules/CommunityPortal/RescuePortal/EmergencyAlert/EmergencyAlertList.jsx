@@ -11,8 +11,8 @@ const EmergencyAlert = ({ alert }) => {
     { label: "Victim ID", value: alert.victim_name },
     { label: "Alert Time", value: formatDate(alert.alert_time) },
     {
-      label: "Location",
-      value: `${alert.location_latitude}, ${alert.location_longitude}`,
+      label: "Exact Location",
+      value: ["View Location", "Get Directions"], // For handling the map actions
     },
     { label: "Message", value: alert.message || "N/A" },
   ];

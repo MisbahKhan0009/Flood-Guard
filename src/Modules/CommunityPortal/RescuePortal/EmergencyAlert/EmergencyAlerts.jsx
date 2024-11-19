@@ -58,9 +58,10 @@ const EmergencyAlerts = () => {
             },
           }
         );
-        setAlerts(response.data);
+        setAlerts(response.data.alerts
+        );
         
-        setTotalAlerts(response.data.length); // Assuming response data has all the alerts
+        setTotalAlerts(response.data.totalCount); // Assuming response data has all the alerts
       } catch (error) {
         console.error("Error fetching emergency alerts:", error);
       }
