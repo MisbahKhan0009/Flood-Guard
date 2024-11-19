@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export const NavLinks = (user) => [
   { name: "Community Portal", path: "/community-portal" },
-  { name: "Flood Prediction", path: "/flood-prediction" },
+  
   ...(user ? [] : [{ name: "Login", path: "/login" }]),
 ];
 

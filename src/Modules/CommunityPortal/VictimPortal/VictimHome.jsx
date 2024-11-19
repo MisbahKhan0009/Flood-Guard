@@ -35,6 +35,16 @@ const VictimHome = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showDeadbodyModal, setShowDeadbodyModal] = useState(false);
+  const [deadbodyFormData, setDeadbodyFormData] = useState({
+    image_url: "", // Image URL for the dead body report (if applicable)
+    found_location: "", // Location of the found body
+    description: "",
+    identified: "No", // Identified can be either 'Yes' or 'No'
+    found_time: "", // Found time (you can use a date picker)
+    submitted_hospital_id: "", // Hospital ID if needed
+  });
+
   const [formData, setFormData] = useState({
     NID: "",
     name: "",
@@ -164,7 +174,6 @@ const VictimHome = () => {
         Temp_Diff: dayForecast.maxtemp_c - dayForecast.mintemp_c,
         Rainfall_Squared: Math.pow(dayForecast.totalprecip_mm, 2),
       };
-      
 
       getPrediction(requestBody);
     } catch (error) {
@@ -210,6 +219,44 @@ const VictimHome = () => {
       .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
   };
 
+  const toggleDeadbodyModal = () =>
+    setShowDeadbodyModal((prevShowModal) => !prevShowModal);
+
+  const handleDeadbodyInputChange = (e) => {
+    const { name, value } = e.target;
+    setDeadbodyFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmitDeadbodyReport = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3000/api/dead-bodies", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(deadbodyFormData),
+      });
+
+      if (response.ok) {
+        toast.success("Deadbody report submitted successfully.");
+        setDeadbodyFormData({
+          image_url: "",
+          found_location: "",
+          description: "",
+          identified: "No",
+          found_time: "",
+          submitted_hospital_id: "",
+        }); // Reset form
+        setShowDeadbodyModal(false); // Close modal
+      } else {
+        toast.error("Failed to submit deadbody report.");
+      }
+    } catch (error) {
+      console.error("Error submitting deadbody report:", error);
+      toast.error("An error occurred while submitting the report.");
+    }
+  };
+
   return (
     <section>
       <div className="flex  flex-wrap h-[50vh] mx-8 rounded-2xl mt-12 bg-opacity-15 bg-primary">
@@ -231,11 +278,144 @@ const VictimHome = () => {
           <Button variant={"default"} className="mt-4" onClick={toggleModal}>
             Ask for Help
           </Button>
+          <section>
+            <Button
+              variant={"default"}
+              className="mt-4"
+              onClick={toggleDeadbodyModal}
+            >
+              Report a Deadbody
+            </Button>
+
+            {/* Deadbody Report Modal */}
+            <Modal
+              isOpen={showDeadbodyModal}
+              onClose={toggleDeadbodyModal}
+              className="w-1/2"
+            >
+              <div className="overflow-y-auto w-4/5 mx-auto my-6 max-h-[80vh]">
+                <h2 className="text-secondary text-4xl text text-center font-museo font-semibold my-4">
+                  Report a Deadbody
+                </h2>
+                <form onSubmit={handleSubmitDeadbodyReport}>
+                  {/* Image URL */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Image URL
+                    </label>
+                    <input
+                      type="text"
+                      name="image_url"
+                      disabled
+                      value={"https://api.multiavatar.com/Binx%20Bond.png"}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  {/* Found Location */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Found Location
+                    </label>
+                    <input
+                      type="text"
+                      name="found_location"
+                      value={deadbodyFormData.found_location}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  {/* Description */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Description
+                    </label>
+                    <textarea
+                      name="description"
+                      value={deadbodyFormData.description}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      rows="4"
+                      required
+                    />
+                  </div>
+                  {/* Identified */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Identified
+                    </label>
+                    <select
+                      name="identified"
+                      value={deadbodyFormData.identified}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    >
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                  {/* Found Time */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Found Time
+                    </label>
+                    <input
+                      type="datetime-local"
+                      name="found_time"
+                      value={deadbodyFormData.found_time}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  {/* Hospital ID */}
+                  <div className="mb-4 text-base">
+                    <label className="text-secondary font-medium">
+                      Submitted Hospital ID
+                    </label>
+                    <input
+                      type="number"
+                      name="submitted_hospital_id"
+                      value={deadbodyFormData.submitted_hospital_id}
+                      onChange={handleDeadbodyInputChange}
+                      className="w-full px-4 py-2 rounded-lg border border-primary text-secondary focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    />
+                  </div>
+
+                  <Button
+                    variant={"secondary"}
+                    type="submit"
+                    className="w-1/4 text-lg mx-auto mt-4 me-4"
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    variant={"default"}
+                    onClick={toggleDeadbodyModal}
+                    className="w-1/4 text-lg mx-auto mt-4"
+                  >
+                    Cancel
+                  </Button>
+                </form>
+              </div>
+            </Modal>
+          </section>
         </div>
 
-        <div className="w-full md:w-1/2 flex justify-center items-center p-6">
-          <div
-            className={`text-center p-6 rounded-lg ${
+        <div
+          className="w-full md:w-1/2 flex justify-center items-center p-6 "
+          style={{
+            backgroundImage: "url(/PredictionBG.jpg)",
+            backgroundSize: "cover",
+            filter: "brightness(80%)", // Reduce brightness by 50%
+          }}
+        >
+          <div 
+            className={`text-center p-6 rounded-lg backdrop-filter backdrop-blur-sm bg-opacity-20 border-2 ${
               prediction
                 ? prediction.error
                   ? "bg-primary" // Error background color (optional)
@@ -246,7 +426,7 @@ const VictimHome = () => {
                       : prediction.risk === "Low Risk"
                         ? "bg-green-500 bg-opacity-20 border-2 border-green-500 text-green-500"
                         : "bg-primary text-secondary" // Default background if risk is unknown
-                : "bg-primary text-secondary" // Default background if no prediction
+                : "bg-primary  border-primary text-white" // Default background if no prediction
             }`}
           >
             <p className="text-4xl font-semibold">
@@ -254,7 +434,7 @@ const VictimHome = () => {
                 ? prediction.error
                   ? prediction.error
                   : `Risk: ${prediction.risk}`
-                : "Please click on the button to get prediction"}
+                : "Get flood prediction"}
             </p>
           </div>
         </div>
