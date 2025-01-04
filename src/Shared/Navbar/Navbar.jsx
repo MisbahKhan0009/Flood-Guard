@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export const NavLinks = (user) => [
   { name: "Community Portal", path: "/community-portal" },
-  
+
   ...(user ? [] : [{ name: "Login", path: "/login" }]),
 ];
 
@@ -60,12 +60,13 @@ const Navbar = () => {
       </Link>
 
       {/* Navigation Links */}
-      <div className="flex w-1/3 items-center text-2xl font-museo justify-between">
+
+      <div className="flex items-center text-2xl me-10 font-museo space-x-10">
         {NavLinks(user).map(({ name, path }, idx) => (
           <Link
             to={path}
             key={idx}
-            className="relative text-secondary text-decoration-none  group"
+            className="relative text-secondary text-decoration-none group"
           >
             {name}
             <span className="absolute bottom-0 left-0 w-full h-0.5 bg-secondary transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
@@ -75,7 +76,7 @@ const Navbar = () => {
 
       {/* User Profile Dropdown */}
       {user && (
-        <div className="relative me-10">
+        <div className="relative me-4">
           <button
             onClick={toggleDropdown}
             className="flex items-center justify-center space-x-2 focus:outline-none"

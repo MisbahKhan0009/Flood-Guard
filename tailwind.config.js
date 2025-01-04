@@ -1,8 +1,6 @@
 import tailwindAnimate from "tailwindcss-animate";
-
-const {
-  default: flattenColorPalette,
-} = require("tailwindcss/lib/util/flattenColorPalette");
+const flattenColorPalette =
+  require("tailwindcss/lib/util/flattenColorPalette").default;
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -10,7 +8,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     container: {
-      center: "true",
+      center: true, // Fix: Changed "true" to true
       padding: "2rem",
       screens: {
         "2xl": "1400px",
@@ -91,8 +89,8 @@ export default {
 };
 
 function addVariablesForColors({ addBase, theme }) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
+  const allColors = flattenColorPalette(theme("colors")); // Ensuring correct flattenColorPalette usage
+  const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
 
