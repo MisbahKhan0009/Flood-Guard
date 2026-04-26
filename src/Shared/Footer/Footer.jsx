@@ -13,7 +13,7 @@ const Footer = () => {
               Your trusted source for rescue management and flood prediction.
             </p>
           </div>
-          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
+          {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
             {FooterLinks.map((link) => (
               <a
                 key={link.name}
@@ -25,7 +25,7 @@ const Footer = () => {
                 {link.name}
               </a>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="mt-6 border-t border-secondary w-full max-w-6xl">
           <p className="text-center text-sm py-4">
